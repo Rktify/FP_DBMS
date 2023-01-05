@@ -4,7 +4,7 @@ from ..Committees.main import committeesWindow
 
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"F:\build\gui\Create\Event\assets\frame5")
+ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame5")
 
 
 def relative_to_assets(path: str) -> Path:

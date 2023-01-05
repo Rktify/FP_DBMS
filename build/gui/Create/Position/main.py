@@ -4,7 +4,7 @@ from ..Participants.main import participantsWindow
 
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"F:\build\gui\Create\Position\assets\frame3")
+ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame3")
 
 
 def relative_to_assets(path: str) -> Path:

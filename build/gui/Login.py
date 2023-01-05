@@ -8,7 +8,7 @@ from Position import Position
 
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"F:\build\assets\frame8")
+ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame8")
 
 
 def relative_to_assets(path: str) -> Path:

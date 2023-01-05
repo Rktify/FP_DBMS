@@ -4,7 +4,7 @@ from ..Tickets.main import ticketsWindow
 
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"F:\build\gui\Create\Participants\assets\frame2")
+ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame2")
 
 
 def relative_to_assets(path: str) -> Path:

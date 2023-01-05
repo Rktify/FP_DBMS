@@ -5,7 +5,7 @@ from .connector import *
 from .. import main
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"F:\build\gui\View\assets\frame6")
+ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame6")
 
 
 def relative_to_assets(path: str) -> Path:
