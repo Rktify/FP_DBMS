@@ -5,7 +5,11 @@ from .connector import *
 from .. import Redirect
 
 OUTPUT_PATH = Path(__file__).parent
+<<<<<<< HEAD
 ASSETS_PATH = OUTPUT_PATH / Path(r"assets\Viewassets")
+=======
+ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame6")
+>>>>>>> d865fa75a5773912dde1b399f70a39f3e6cecd52
 
 
 def relative_to_assets(path: str) -> Path:
