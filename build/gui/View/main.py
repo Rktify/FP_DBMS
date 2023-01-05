@@ -2,6 +2,7 @@ from pathlib import Path
 from tkinter import *
 from tkinter.ttk import Treeview
 from .connector import *
+from .. import main
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"F:\build\gui\View\assets\frame6")
@@ -62,7 +63,8 @@ class View(Toplevel):
                 self.columns = {
                     "Committees ID": ["Committees ID", 100],
                     "Name": ["Name", 200],
-                    "Position ID": ["Position ID", 200]
+                    "Position ID": ["Position ID", 100],
+                    "Event ID": ["Event ID", 100]
                 }
 
                 self.treeview = Treeview(
@@ -174,6 +176,12 @@ class View(Toplevel):
 
                 self.treeview.place(x=295.0, y=80.0, width=500.0, height=300.0)
                 handle_refresh(self, btn_name)
+
+            elif btn_name == "Home":
+                print("Home button clicked")
+                self.destroy()
+                main.goSelection()
+                return
             
         
 
@@ -330,13 +338,24 @@ class View(Toplevel):
             height=47.0
         )
 
-        self.canvas.create_text(
-            30.0,
-            49.0,
-            anchor="nw",
-            text="Evenementiel",
-            fill="#FFFFFF",
-            font=("Encode Sans SC", 31 * -1)
+        button_image_7 = PhotoImage(
+            file=relative_to_assets("button_7.png"))
+        self.button_7 = Button(
+            self.canvas,
+            image=button_image_7,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: handle_button_press("Home", self),
+            relief="sunken",
+            bg = '#FF7A00',
+            activebackground='#FF7A00',
+            activeforeground='#FF7A00'
+        )
+        self.button_7.place(
+            x=22.0,
+            y=49.0,
+            width=234.0,
+            height=47.0
         )
 
     

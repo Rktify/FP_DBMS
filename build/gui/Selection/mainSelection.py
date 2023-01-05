@@ -1,7 +1,7 @@
 from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Toplevel
-from ..View.main import viewWindow
 from ..Create.Event.main import createWindow
+from .. import main
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -15,13 +15,12 @@ def selectionWindow():
     Selection()
 
 class Selection(Toplevel):
-
     def handle_button_press(self, btn_name):
         # self.current_window = self.windows.get(btn_name)
         if btn_name == "View":
             print("View button clicked")
             self.destroy()
-            viewWindow()
+            main.goView()
             return
         elif btn_name == "Manage":
             print("Manage button clicked")
