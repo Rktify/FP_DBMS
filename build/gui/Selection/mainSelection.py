@@ -1,11 +1,11 @@
 from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Toplevel
-from ..Create.Event.main import createWindow
-from .. import main
+from ..Manage.Event.main import eventWindow
+from .. import Redirect
 
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"F:\build\gui\Selection\assets\frame7")
+ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame7")
 
 
 def relative_to_assets(path: str) -> Path:
@@ -16,21 +16,15 @@ def selectionWindow():
 
 class Selection(Toplevel):
     def handle_button_press(self, btn_name):
-        # self.current_window = self.windows.get(btn_name)
         if btn_name == "View":
             print("View button clicked")
             self.destroy()
-            main.goView()
+            Redirect.goView()
             return
         elif btn_name == "Manage":
             print("Manage button clicked")
             self.destroy()
-            manageWindow()
-            return
-        elif btn_name == "Create":
-            print("Create button clicked")
-            self.destroy()
-            createWindow()
+            eventWindow()
             return
 
     def __init__(self, *args, **kwargs):
@@ -77,7 +71,7 @@ class Selection(Toplevel):
             cursor="hand2"
         )
         self.button_1.place(
-            x=28.0,
+            x=99.0,
             y=209.0,
             width=247.0,
             height=233.0
@@ -95,25 +89,7 @@ class Selection(Toplevel):
             cursor="hand2"
         )
         self.button_2.place(
-            x=303.0,
-            y=209.0,
-            width=247.0,
-            height=233.0
-        )
-
-        button_image_3 = PhotoImage(
-            file=relative_to_assets("button_3.png"))
-        self.button_3 = Button(
-            self.canvas,
-            image=button_image_3,
-            borderwidth=0,
-            highlightthickness=0,
-            command = lambda: self.handle_button_press("Create"),
-            relief="sunken",
-            cursor="hand2"
-        )
-        self.button_3.place(
-            x=578.0,
+            x=504.0,
             y=209.0,
             width=247.0,
             height=233.0

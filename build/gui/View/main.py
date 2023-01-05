@@ -2,10 +2,10 @@ from pathlib import Path
 from tkinter import *
 from tkinter.ttk import Treeview
 from .connector import *
-from .. import main
+from .. import Redirect
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"F:\build\gui\View\assets\frame6")
+ASSETS_PATH = OUTPUT_PATH / Path(r"assets\Viewassets")
 
 
 def relative_to_assets(path: str) -> Path:
@@ -36,7 +36,7 @@ class View(Toplevel):
             if btn_name == "Events":
                 print("Events pressed")
                 self.columns = {
-                    "Event ID": ["Event ID", 50],
+                    "Event ID": ["Event ID", 100],
                     "Event Name": ["Event Name", 100],
                     "Location": ["Location", 100],
                     "Date": ["Date", 100],
@@ -180,16 +180,14 @@ class View(Toplevel):
             elif btn_name == "Home":
                 print("Home button clicked")
                 self.destroy()
-                main.goSelection()
+                Redirect.goSelection()
                 return
-            
-        
 
+        #View tkinter
         Toplevel.__init__(self, *args, **kwargs)
         self.title("Evenementiel Viewing Menu")
         self.geometry("853x556")
         self.current_window = None
-        
 
         self.canvas = Canvas(
             self,
@@ -358,13 +356,7 @@ class View(Toplevel):
             height=47.0
         )
 
-    
         self.resizable(False, False)
         self.mainloop()
 
-        
-        
-    
-    
-    
-    
+
