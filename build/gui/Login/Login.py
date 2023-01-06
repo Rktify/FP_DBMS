@@ -1,6 +1,7 @@
 from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Toplevel
 from .. import Redirect
+from ..View.connector import *
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -14,23 +15,23 @@ def loginWindow():
     Login()
 
 class Login(Toplevel):
-
-    def getDetails(self):
-        print("Continue button clicked")
-        userName = self.entry_1.get()
-        password = self.entry_2.get()
-        if userName == "admin1" and password == "admin":
-            self.destroy()
-            Redirect.goSelection()
-        else:
-            self.destroy()
-            Redirect.goView()
-
     def __init__(self, *args, **kwargs):
+        def getDetails(self):
+            print("Continue button clicked")
+            userName = self.entry_1.get()
+            password = self.entry_2.get()
+            if userName == "admin" and password == "admin":
+                self.destroy()
+                Redirect.goSelection()
+            elif password == "user":
+                self.destroy()
+                Redirect.gouserView()
+            else:
+                pass
+
         Toplevel.__init__(self, *args, **kwargs)
         self.title("Evenementiel Login Menu")
         self.geometry("853x556")
-        self.current_window = None
 
         self.canvas = Canvas(
             self,
@@ -66,7 +67,7 @@ class Login(Toplevel):
             image=button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: self.getDetails(),
+            command=lambda: getDetails(self),
             relief="sunken",
             bg = "#FFFFFF",
             activebackground="#FFFFFF",
@@ -118,7 +119,6 @@ class Login(Toplevel):
             width=211.0,
             height=27.0
         )
-
         entry_image_2 = PhotoImage(
             file=relative_to_assets("entry_2.png"))
         entry_bg_2 = self.canvas.create_image(

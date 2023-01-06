@@ -53,6 +53,7 @@ class Event(Toplevel):
                 self.destroy()
                 Redirect.goSelection()
 
+
         def refresh():
             display()
             clearRecord()
@@ -95,7 +96,6 @@ class Event(Toplevel):
         Toplevel.__init__(self, *args, **kwargs)
         self.title("Evenementiel Managing Events")
         self.geometry("853x556")
-        self.current_window = None
 
         self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x = 0, y = 0)
@@ -122,7 +122,7 @@ class Event(Toplevel):
                 treeview.insert("", "end", values=row)
 
         display()
-
+        treeview.bind("<Double-1>", selectRecord)
         self.canvas.create_rectangle(0.0, 0.0, 853.0, 556.0, fill="#FFFFFF", outline="")
 
         self.canvas.create_rectangle(0.0, 501.0, 853.0, 556.0, fill="#FF7A00", outline="")
@@ -309,9 +309,6 @@ class Event(Toplevel):
             420.0,
             fill="#FFFFFF",
             outline="")
-
-
-        treeview.bind("<Double-1>", selectRecord)
 
         self.resizable(False, False)
         self.mainloop()
