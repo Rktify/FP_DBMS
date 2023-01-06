@@ -19,21 +19,31 @@ class Event(Toplevel):
     def __init__(self, *args, **kwargs):
         def handle_button_press(btn_name, self):
             if btn_name == "Refresh":
-                print("Clicked")
+                print("Refreshed")
                 refresh()
             elif btn_name == "Add":
-                time = self.entry_1.get()
-                date = self.entry_2.get()
-                location = self.entry_3.get()
-                eventName = self.entry_4.get()
-                eventID = self.entry_5.get()
+                time = self.timeEntry.get()
+                date = self.dateEntry.get()
+                location = self.locationEntry.get()
+                eventName = self.eventNameEntry.get()
+                eventID = self.eventIDEntry.get()
                 sql = "INSERT INTO Event VALUES(%s, %s, %s, %s, %s);"
                 value = (eventID, eventName, location, date, time)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
+                print("Added into Database")
             elif btn_name == "Edit":
-                pass
+                time = self.timeEntry.get()
+                date = self.dateEntry.get()
+                location = self.locationEntry.get()
+                eventName = self.eventNameEntry.get()
+                eventID = self.eventIDEntry.get()
+                sql = "UPDATE Event SET EventID = %s, EventName = %s, Location = %s, Date = %s, Time = %s WHERE EventID = %s"
+                value = (eventID, eventName, location, date, time, eventID)
+                cursor.execute(sql, value)
+                refresh()
+                print("Updated Database")
             elif btn_name == "Delete":
                 removeRecord()
             elif btn_name == "Continue":
@@ -48,23 +58,28 @@ class Event(Toplevel):
             clearRecord()
 
         def clearRecord():
-            self.entry_1.delete(0, END)
-            self.entry_2.delete(0, END)
-            self.entry_3.delete(0, END)
-            self.entry_4.delete(0, END)
-            self.entry_5.delete(0, END)
+            self.eventIDEntry.configure(state='normal')
+            self.timeEntry.delete(0, END)
+            self.dateEntry.delete(0, END)
+            self.locationEntry.delete(0, END)
+            self.eventNameEntry.delete(0, END)
+            self.eventIDEntry.delete(0, END)
 
         def selectRecord(e):
+            self.eventIDEntry.configure(state='normal')
             clearRecord()
 
             selected = treeview.focus()
             values = treeview.item(selected, 'values')
 
-            self.entry_1.insert(0, values[4])
-            self.entry_2.insert(0, values[3])
-            self.entry_3.insert(0, values[2])
-            self.entry_4.insert(0, values[1])
-            self.entry_5.insert(0, values[0])
+            self.timeEntry.insert(0, values[4])
+            self.dateEntry.insert(0, values[3])
+            self.locationEntry.insert(0, values[2])
+            self.eventNameEntry.insert(0, values[1])
+            self.eventIDEntry.insert(0, values[0])
+            self.eventIDEntry.configure(state='readonly')
+
+            print("Selected")
 
         def removeRecord():
             selected = treeview.focus()
@@ -75,6 +90,7 @@ class Event(Toplevel):
             connect.commit()
             treeview.delete(selected)
             refresh()
+            print("Removed from Database")
 
         Toplevel.__init__(self, *args, **kwargs)
         self.title("Evenementiel Managing Events")
@@ -139,8 +155,8 @@ class Event(Toplevel):
 
         entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
         entry_bg_1 = self.canvas.create_image(711.5,304.5,image=entry_image_1)
-        self.entry_1 = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.entry_1.place(x=606.0,y=290.0,width=211.0,height=27.0)
+        self.timeEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.timeEntry.place(x=606.0,y=290.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
             480.0,
@@ -158,14 +174,14 @@ class Event(Toplevel):
             258.5,
             image=entry_image_2
         )
-        self.entry_2 = Entry(
+        self.dateEntry = Entry(
             self.canvas,
             bd=0,
             bg="#D9D9D9",
             fg="#000716",
             highlightthickness=0
         )
-        self.entry_2.place(
+        self.dateEntry.place(
             x=606.0,
             y=244.0,
             width=211.0,
@@ -188,14 +204,14 @@ class Event(Toplevel):
             213.5,
             image=entry_image_3
         )
-        self.entry_3 = Entry(
+        self.locationEntry = Entry(
             self.canvas,
             bd=0,
             bg="#D9D9D9",
             fg="#000716",
             highlightthickness=0
         )
-        self.entry_3.place(
+        self.locationEntry.place(
             x=606.0,
             y=199.0,
             width=211.0,
@@ -218,13 +234,13 @@ class Event(Toplevel):
             167.5,
             image=entry_image_4
         )
-        self.entry_4 = Entry(self.canvas,
+        self.eventNameEntry = Entry(self.canvas,
             bd=0,
             bg="#D9D9D9",
             fg="#000716",
             highlightthickness=0
         )
-        self.entry_4.place(
+        self.eventNameEntry.place(
             x=607.0,
             y=153.0,
             width=211.0,
@@ -247,13 +263,13 @@ class Event(Toplevel):
             121.5,
             image=entry_image_5
         )
-        self.entry_5 = Entry(self.canvas,
+        self.eventIDEntry = Entry(self.canvas,
             bd=0,
             bg="#D9D9D9",
             fg="#000716",
             highlightthickness=0
         )
-        self.entry_5.place(
+        self.eventIDEntry.place(
             x=606.0,
             y=107.0,
             width=211.0,
