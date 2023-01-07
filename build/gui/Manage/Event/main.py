@@ -4,7 +4,6 @@ from tkinter.ttk import Treeview
 from ..connector import *
 from .. import Redirect
 
-
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame4")
 
@@ -42,13 +41,14 @@ class Event(Toplevel):
                 sql = "UPDATE Event SET EventID = %s, EventName = %s, Location = %s, Date = %s, Time = %s WHERE EventID = %s"
                 value = (eventID, eventName, location, date, time, eventID)
                 cursor.execute(sql, value)
+                connect.commit()
                 refresh()
                 print("Updated Database")
             elif btn_name == "Delete":
                 removeRecord()
             elif btn_name == "Continue":
                 self.destroy()
-                Redirect.goCommittees()
+                Redirect.goPosition()
             elif btn_name == "Back":
                 self.destroy()
                 Redirect.goSelection()
@@ -86,7 +86,7 @@ class Event(Toplevel):
             selected = treeview.focus()
             eid = treeview.item(selected, 'values')[0]
             sql = "DELETE FROM Event WHERE EventID=%s"
-            value = (eid,)
+            value = (eid)
             cursor.execute(sql, value)
             connect.commit()
             treeview.delete(selected)
@@ -167,56 +167,23 @@ class Event(Toplevel):
             font=("Encode Sans SC", 19 * -1)
         )
 
-        entry_image_2 = PhotoImage(
-            file=relative_to_assets("entry_2.png"))
-        entry_bg_2 = self.canvas.create_image(
-            711.5,
-            258.5,
-            image=entry_image_2
-        )
-        self.dateEntry = Entry(
-            self.canvas,
-            bd=0,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
-        )
-        self.dateEntry.place(
-            x=606.0,
-            y=244.0,
-            width=211.0,
-            height=27.0
-        )
+        entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
+        entry_bg_2 = self.canvas.create_image(711.5,258.5,image=entry_image_2)
+        self.dateEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.dateEntry.place( x=606.0, y=244.0, width=211.0, height=27.0)
 
         self.canvas.create_text(
-            480.0,
-            247.0,
+            480.0, 247.0,
             anchor="nw",
             text="Date: ",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )
 
-        entry_image_3 = PhotoImage(
-            file=relative_to_assets("entry_3.png"))
-        entry_bg_3 = self.canvas.create_image(
-            711.5,
-            213.5,
-            image=entry_image_3
-        )
-        self.locationEntry = Entry(
-            self.canvas,
-            bd=0,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
-        )
-        self.locationEntry.place(
-            x=606.0,
-            y=199.0,
-            width=211.0,
-            height=27.0
-        )
+        entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
+        entry_bg_3 = self.canvas.create_image(711.5,213.5,image=entry_image_3)
+        self.locationEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.locationEntry.place(x=606.0,y=199.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
             480.0,
@@ -227,25 +194,10 @@ class Event(Toplevel):
             font=("Encode Sans SC", 19 * -1)
         )
 
-        entry_image_4 = PhotoImage(
-            file=relative_to_assets("entry_4.png"))
-        entry_bg_4 = self.canvas.create_image(
-            712.5,
-            167.5,
-            image=entry_image_4
-        )
-        self.eventNameEntry = Entry(self.canvas,
-            bd=0,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
-        )
-        self.eventNameEntry.place(
-            x=607.0,
-            y=153.0,
-            width=211.0,
-            height=27.0
-        )
+        entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
+        entry_bg_4 = self.canvas.create_image(712.5,167.5,image=entry_image_4)
+        self.eventNameEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.eventNameEntry.place(x=607.0,y=153.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
             480.0,
@@ -256,25 +208,10 @@ class Event(Toplevel):
             font=("Encode Sans SC", 19 * -1)
         )
 
-        entry_image_5 = PhotoImage(
-            file=relative_to_assets("entry_5.png"))
-        entry_bg_5 = self.canvas.create_image(
-            711.5,
-            121.5,
-            image=entry_image_5
-        )
-        self.eventIDEntry = Entry(self.canvas,
-            bd=0,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
-        )
-        self.eventIDEntry.place(
-            x=606.0,
-            y=107.0,
-            width=211.0,
-            height=27.0
-        )
+        entry_image_5 = PhotoImage(file=relative_to_assets("entry_5.png"))
+        entry_bg_5 = self.canvas.create_image(711.5,121.5,image=entry_image_5)
+        self.eventIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.eventIDEntry.place(x=606.0,y=107.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
             480.0,

@@ -21,7 +21,7 @@ class userView(Toplevel):
             if tableName == "Events":
                 self.event_data = getEvents()
             elif tableName == "Participants":
-                self.event_data = getParticipants()
+                self.event_data = handleID()
             elif tableName == "Tickets":
                 self.event_data = getTickets()
             for row in self.event_data:
@@ -98,11 +98,22 @@ class userView(Toplevel):
 
                 self.treeview.place(x=295.0, y=80.0, width=500.0, height=300.0)
                 handle_refresh(self, btn_name)
+
             elif btn_name == "Back":
                 print("Back button clicked")
                 self.destroy()
                 Redirect.goLogin()
                 return
+
+        def handleID():
+            pid = self.IDEntry.get()
+            sql = "SELECT * FROM Participants WHERE ParticipantsID = %s"
+            value = (pid,)
+            cursor.execute(sql, value)
+            self.IDEntry.delete(0, END)
+            return cursor.fetchall()
+
+
 
         Toplevel.__init__(self, *args, **kwargs)
         self.title("Evenementiel User View")
@@ -193,7 +204,7 @@ class userView(Toplevel):
             image=button_image_4,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: handle_button_press("Login", self),
+            command=lambda: handle_button_press("Back", self),
             relief="flat"
         )
         self.button_4.place(
