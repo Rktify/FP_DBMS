@@ -1,6 +1,8 @@
 from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Toplevel
-from ..Tickets.main import ticketsWindow
+from tkinter import *
+from tkinter.ttk import Treeview
+from ..connector import *
+from .. import Redirect
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -14,23 +16,111 @@ def participantsWindow():
     Participants()
 
 class Participants(Toplevel):
-
     def __init__(self, *args, **kwargs):
+        def handle_button_press(btn_name, self):
+            if btn_name == "Refresh":
+                print("Refreshed")
+                refresh()
+            elif btn_name == "Add":
+                participantsID = self.participantsIDEntry.get()
+                name = self.nameEntry.get()
+                ticketID = self.ticketIDEntry.get()
+                eventID = self.eventIDEntry.get()
+                sql = "INSERT INTO Participants VALUES(%s, %s, %s, %s);"
+                value = (participantsID, name, ticketID, eventID)
+                cursor.execute(sql, value)
+                connect.commit()
+                refresh()
+                print("Added into Database")
+            elif btn_name == "Edit":
+                participantsID = self.participantsIDEntry.get()
+                name = self.nameEntry.get()
+                ticketID = self.ticketIDEntry.get()
+                eventID = self.eventIDEntry.get()
+                sql = "UPDATE Participants SET ParticipantsID = %s, Name = %s, TicketID = %s, EventID = %s WHERE ParticipantsID = %s"
+                value = (participantsID, name, ticketID, eventID, participantsID)
+                cursor.execute(sql, value)
+                connect.commit()
+                refresh()
+                print("Updated Database")
+            elif btn_name == "Delete":
+                removeRecord()
+            elif btn_name == "Continue":
+                self.destroy()
+                Redirect.goPosition()
+            elif btn_name == "Back":
+                self.destroy()
+                # Redirect.goTicketStats()
+
+
+        def refresh():
+            display()
+            clearRecord()
+
+        def clearRecord():
+            self.participantsIDEntry.configure(state='normal')
+            self.eventIDEntry.delete(0, END)
+            self.ticketIDEntry.delete(0, END)
+            self.nameEntry.delete(0, END)
+            self.participantsIDEntry.delete(0, END)
+
+        def selectRecord(e):
+            clearRecord()
+
+            selected = treeview.focus()
+            values = treeview.item(selected, 'values')
+
+            self.eventIDEntry.insert(0, values[3])
+            self.ticketIDEntry.insert(0, values[2])
+            self.nameEntry.insert(0, values[1])
+            self.participantsIDEntry.insert(0, values[0])
+            self.participantsIDEntry.configure(state='readonly')
+
+            print("Selected")
+
+        def removeRecord():
+            selected = treeview.focus()
+            eid = treeview.item(selected, 'values')[0]
+            sql = "DELETE FROM Participants WHERE ParticipantsID=%s"
+            value = (eid,)
+            cursor.execute(sql, value)
+            connect.commit()
+            treeview.delete(selected)
+            refresh()
+            print("Removed from Database")
+
+
         Toplevel.__init__(self, *args, **kwargs)
-        self.title("Evenementiel Adding Participants")
+        self.title("Evenementiel Managing Participants")
         self.geometry("853x556")
-        self.configure(bg = "#FFFFFF")
-        self.canvas = Canvas(
-            self,
-            bg = "#FFFFFF",
-            height = 556,
-            width = 853,
-            bd = 0,
-            highlightthickness = 0,
-            relief = "ridge"
+
+        columns = {"Participants ID": ["Participants ID", 100],"Name": ["Name", 100],"Ticket ID": ["Ticket ID", 100], "Event ID": ["Event ID", 100]}
+
+        treeview = Treeview(
+            self.canvas,
+            columns=list(columns.keys()),
+            show="headings",
+            height=200,
+            selectmode="browse",
         )
 
+        def display():
+            for idx, txt in columns.items():
+                treeview.heading(idx, text=txt[0])
+                treeview.column(idx, width=txt[1])
+
+            treeview.place(x=20.0, y=62.0, width=400.0, height=358.0)
+            treeview.delete(*treeview.get_children())
+            event_data = getParticipants()
+            for row in event_data:
+                treeview.insert("", "end", values=row)
+
+        display()
+        treeview.bind("<Double-1>", selectRecord)
+
+        self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x = 0, y = 0)
+
         self.canvas.create_rectangle(
             0.0,
             0.0,
@@ -47,141 +137,91 @@ class Participants(Toplevel):
             fill="#FF7A00",
             outline="")
 
-        button_image_1 = PhotoImage(
-            file=relative_to_assets("button_1.png"))
-        self.button_1 = Button(
-            self.canvas,
-            image=button_image_1,
-            borderwidth=0,
-            highlightthickness=0,
-            command=lambda: self.handle_button_press(),
-            relief="flat"
-        )
-        self.button_1.place(
-            x=533.0,
-            y=390.0,
-            width=247.0,
-            height=57.0
-        )
+        button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
+        self.button_1 = Button(self.canvas,image=button_image_1, borderwidth=0, highlightthickness=0, command=lambda: handle_button_press("Edit", self), relief="sunken", cursor="hand2")
+        self.button_1.place( x=722.0, y=356.0, width=119.0, height=46.0)
 
-        entry_image_1 = PhotoImage(
-            file=relative_to_assets("entry_1.png"))
-        entry_bg_1 = self.canvas.create_image(
-            722.5,
-            275.5,
-            image=entry_image_1
-        )
-        entry_1 = Entry(
-            self.canvas,
-            bd=0,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
-        )
-        entry_1.place(
-            x=617.0,
-            y=261.0,
-            width=211.0,
-            height=27.0
-        )
+        button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
+        self.button_2 = Button(self.canvas, image=button_image_2, borderwidth=0, highlightthickness=0, command=lambda: handle_button_press("Add", self), relief="sunken", cursor="hand2")
+        self.button_2.place( x=589.0, y=356.0, width=119.0, height=46.0)
 
+        button_image_3 = PhotoImage(file=relative_to_assets("button_3.png"))
+        self.button_3 = Button(self.canvas,image=button_image_3,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Delete", self),relief="sunken", cursor="hand2")
+        self.button_3.place(x=456.0,y=356.0, width=119.0, height=46.0)
+
+        button_image_4 = PhotoImage(file=relative_to_assets("button_4.png"))
+        self.button_4 = Button(self.canvas,image=button_image_4,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Continue", self),relief="sunken", cursor="hand2")
+        self.button_4.place(x=722.0,y=418.0,width=119.0,height=46.0)
+
+        button_image_5 = PhotoImage(file=relative_to_assets("button_5.png"))
+        self.button_5 = Button(self.canvas,image=button_image_5,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Refresh", self),relief="sunken", cursor="hand2")
+        self.button_5.place(x=589.0,y=418.0,width=119.0,height=46.0)
+
+        button_image_6 = PhotoImage(file=relative_to_assets("button_6.png"))
+        self.button_6 = Button(self.canvas,image=button_image_6,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Back", self),relief="sunken", cursor="hand2")
+        self.button_6.place(x=456.0,y=418.0, width=119.0, height=46.0)
+
+        entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
+        entry_bg_1 = self.canvas.create_image(711.5,304.5,image=entry_image_1)
+        self.eventIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.eventIDEntry.place(x=606.0,y=290.0,width=211.0,height=27.0)
         self.canvas.create_text(
-            465.0,
-            263.0,
+            480.0,
+            293.0,
             anchor="nw",
             text="EventID: ",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )
 
-        entry_image_2 = PhotoImage(
-            file=relative_to_assets("entry_2.png"))
-        entry_bg_2 = self.canvas.create_image(
-            722.5,
-            231.5,
-            image=entry_image_2
-        )
-        entry_2 = Entry(
-            self.canvas,
-            bd=0,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
-        )
-        entry_2.place(
-            x=617.0,
-            y=217.0,
-            width=211.0,
-            height=27.0
-        )
+        entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
+        entry_bg_2 = self.canvas.create_image(711.5,258.5,image=entry_image_2)
+        self.ticketIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.ticketIDEntry.place( x=606.0, y=244.0, width=211.0, height=27.0)
 
         self.canvas.create_text(
-            465.0,
-            219.0,
+            480.0, 247.0,
             anchor="nw",
             text="TicketID: ",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )
 
-        entry_image_3 = PhotoImage(
-            file=relative_to_assets("entry_3.png"))
-        entry_bg_3 = self.canvas.create_image(
-            722.5,
-            186.5,
-            image=entry_image_3
-        )
-        entry_3 = Entry(
-            self.canvas,
-            bd=0,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
-        )
-        entry_3.place(
-            x=617.0,
-            y=172.0,
-            width=211.0,
-            height=27.0
-        )
+        entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
+        entry_bg_3 = self.canvas.create_image(711.5,213.5,image=entry_image_3)
+        self.nameEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.nameEntry.place(x=606.0,y=199.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
-            465.0,
-            174.0,
+            480.0,
+            201.0,
             anchor="nw",
-            text="Name:",
+            text="Name: ",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )
 
-        entry_image_4 = PhotoImage(
-            file=relative_to_assets("entry_4.png"))
-        entry_bg_4 = self.canvas.create_image(
-            722.5,
-            141.5,
-            image=entry_image_4
-        )
-        entry_4 = Entry(
-            self.canvas,
-            bd=0,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
-        )
-        entry_4.place(
-            x=617.0,
-            y=127.0,
-            width=211.0,
-            height=27.0
+        entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
+        entry_bg_4 = self.canvas.create_image(712.5,167.5,image=entry_image_4)
+        self.participantsIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.participantsIDEntry.place(x=607.0,y=153.0,width=211.0,height=27.0)
+
+        self.canvas.create_text(
+            480.0,
+            155.0,
+            anchor="nw",
+            text="ParticipantsID:",
+            fill="#000000",
+            font=("Encode Sans SC", 19 * -1)
         )
 
         self.canvas.create_text(
-            465.0,
-            129.0,
+            542.0,
+            17.0,
             anchor="nw",
-            text="ParticipantsID: ",
+            text="Participants Table",
             fill="#000000",
-            font=("Encode Sans SC", 19 * -1)
+            font=("Encode Sans SC", 37 * -1)
         )
 
         self.canvas.create_rectangle(
@@ -192,18 +232,13 @@ class Participants(Toplevel):
             fill="#FF9D43",
             outline="")
 
-        self.canvas.create_text(
-            73.0,
-            208.0,
-            anchor="nw",
-            text="Participants\nTable",
+        self.canvas.create_rectangle(
+            20.0,
+            62.0,
+            420.0,
+            420.0,
             fill="#FFFFFF",
-            font=("Encode Sans SC", 44 * -1)
-        )
+            outline="")
+
         self.resizable(False, False)
         self.mainloop()
-    def handle_button_press(self):
-        print("Continue button clicked")
-        self.destroy()
-        ticketsWindow()
-        return

@@ -3,7 +3,7 @@ import gui.Manage.Event.main
 import gui.Manage.Participants.main
 import gui.Manage.Position.main
 import gui.Manage.Tickets.main
-# import Manage.TicketStats.main
+# import gui.Manage.TicketStatus.main
 from .. import Redirect
 
 def goEvent():
@@ -21,6 +21,9 @@ def goPosition():
 def goTickets():
     print("Tickets Table")
     gui.Manage.Tickets.main.ticketsWindow()
+def goTicketStatus():
+    print("Tickets Status Table")
+    # gui.Manage.TicketStatus.main.ticketstatusWindow()
 def goSelection():
     print("Back to Selection")
     Redirect.goSelection()

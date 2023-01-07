@@ -19,46 +19,62 @@ class Committees(Toplevel):
     def __init__(self, *args, **kwargs):
         def handle_button_press(btn_name, self):
             if btn_name == "Refresh":
-                print("Clicked")
+                print("Refreshed")
                 refresh()
             elif btn_name == "Add":
-                committeesID = self.entry_1.get()
-                name = self.entry_2.get()
-                positionID = self.entry_3.get()
-                sql = "INSERT INTO Committees VALUES(%s, %s, %s);"
-                value = (committeesID, name, positionID)
+                committeesID = self.committeesIDEntry.get()
+                name = self.nameEntry.get()
+                positionID = self.positionIDEntry.get()
+                eventID = self.eventIDEntry.get()
+                sql = "INSERT INTO Committees VALUES(%s, %s, %s, %s);"
+                value = (committeesID, name, positionID, eventID)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
             elif btn_name == "Edit":
-                pass
+                committeesID = self.committeesIDEntry.get()
+                name = self.nameEntry.get()
+                positionID = self.positionIDEntry.get()
+                eventID = self.eventIDEntry.get()
+                sql = "UPDATE Committees SET CommitteesID = %s, Name = %s, PositionID = %s, EventID = %s WHERE PositionID = %s"
+                value = (committeesID, name, positionID, eventID, committeesID)
+                cursor.execute(sql, value)
+                connect.commit()
+                refresh()
+                print("Updated Database")
             elif btn_name == "Delete":
                 removeRecord()
             elif btn_name == "Continue":
                 self.destroy()
-                Redirect.goPosition()
+                Redirect.goParticipants()
             elif btn_name == "Back":
                 self.destroy()
-                Redirect.goEvent()
+                Redirect.goPosition()
 
         def refresh():
             display()
             clearRecord()
 
         def clearRecord():
-            self.entry_1.delete(0, END)
-            self.entry_2.delete(0, END)
-            self.entry_3.delete(0, END)
+            self.eventIDEntry.delete(0, END)
+            self.nameEntry.delete(0, END)
+            self.positionIDEntry.delete(0, END)
+            self.committeesIDEntry.delete(0, END)
 
         def selectRecord(e):
+            self.committeesIDEntry.configure(state='normal')
             clearRecord()
 
             selected = treeview.focus()
             values = treeview.item(selected, 'values')
 
-            self.entry_1.insert(0, values[2])
-            self.entry_2.insert(0, values[1])
-            self.entry_3.insert(0, values[0])
+            self.committeesIDEntry.insert(0, values[3])
+            self.nameEntry.insert(0, values[2])
+            self.positionIDEntry.insert(0, values[1])
+            self.eventIDEntry.insert(0, values[0])
+            self.committeesIDEntry.configure(state='readonly')
+
+            print("Selected")
 
         def removeRecord():
             selected = treeview.focus()
@@ -101,29 +117,11 @@ class Committees(Toplevel):
 
         display()
 
-        self.canvas.create_rectangle(
-            0.0,
-            0.0,
-            853.0,
-            556.0,
-            fill="#FFFFFF",
-            outline="")
+        self.canvas.create_rectangle(0.0, 0.0, 853.0, 556.0, fill="#FFFFFF", outline="")
 
-        self.canvas.create_rectangle(
-            0.0,
-            501.0,
-            853.0,
-            556.0,
-            fill="#FF7A00",
-            outline="")
+        self.canvas.create_rectangle(0.0, 501.0, 853.0, 556.0, fill="#FF7A00", outline="")
 
-        self.canvas.create_rectangle(
-            43.0,
-            0.0,
-            896.0,
-            80.0,
-            fill="#FF7A00",
-            outline="")
+        self.canvas.create_rectangle(43.0,0.0,896.0,80.0,fill="#FF7A00",outline="")
 
         button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
         self.button_1 = Button(self.canvas,image=button_image_1, borderwidth=0, highlightthickness=0, command=lambda: handle_button_press("Edit", self), relief="sunken", cursor="hand2")
@@ -177,29 +175,29 @@ class Committees(Toplevel):
         entry_image_1 = PhotoImage(
             file=relative_to_assets("entry_1.png"))
         entry_bg_1 = self.canvas.create_image(
-            728.0,
-            255.5,
+            731.5,
+            304.5,
             image=entry_image_1
         )
-        self.entry_1 = Entry(
+        self.eventIDEntry = Entry(
             self.canvas,
             bd=0,
             bg="#D9D9D9",
             fg="#000716",
             highlightthickness=0
         )
-        self.entry_1.place(
-            x=633.0,
-            y=241.0,
-            width=190.0,
+        self.eventIDEntry.place(
+            x=626.0,
+            y=290.0,
+            width=211.0,
             height=27.0
         )
 
         self.canvas.create_text(
-            477.0,
-            246.0,
+            473.0,
+            292.0,
             anchor="nw",
-            text="PositionID:",
+            text="EventID:",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )
@@ -207,21 +205,21 @@ class Committees(Toplevel):
         entry_image_2 = PhotoImage(
             file=relative_to_assets("entry_2.png"))
         entry_bg_2 = self.canvas.create_image(
-            727.5,
-            209.5,
+            731.5,
+            259.5,
             image=entry_image_2
         )
-        self.entry_2 = Entry(
+        self.positionIDEntry = Entry(
             self.canvas,
             bd=0,
             bg="#D9D9D9",
             fg="#000716",
             highlightthickness=0
         )
-        self.entry_2.place(
-            x=633.0,
-            y=195.0,
-            width=189.0,
+        self.positionIDEntry.place(
+            473.0,
+            247.0,
+            width=211.0,
             height=27.0
         )
 
@@ -229,7 +227,7 @@ class Committees(Toplevel):
             477.0,
             200.0,
             anchor="nw",
-            text="Name:",
+            text="PositionID:",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )
@@ -237,32 +235,62 @@ class Committees(Toplevel):
         entry_image_3 = PhotoImage(
             file=relative_to_assets("entry_3.png"))
         entry_bg_3 = self.canvas.create_image(
-            728.0,
-            163.5,
+            731.5,
+            213.5,
             image=entry_image_3
         )
-        self.entry_3 = Entry(
+        self.nameEntry = Entry(
             self.canvas,
             bd=0,
             bg="#D9D9D9",
             fg="#000716",
             highlightthickness=0
         )
-        self.entry_3.place(
-            x=633.0,
-            y=149.0,
-            width=190.0,
+        self.nameEntry.place(
+            x=626.0,
+            y=199.0,
+            width=211.0,
             height=27.0
         )
 
         self.canvas.create_text(
-            477.0,
-            154.0,
+            473.0,
+            201.0,
+            anchor="nw",
+            text="Name: ",
+            fill="#000000",
+            font=("Encode Sans SC", 19 * -1)
+        )
+        entry_image_4 = PhotoImage(
+            file=relative_to_assets("entry_4.png"))
+        entry_bg_4 = self.canvas.create_image(
+            731.5,
+            167.5,
+            image=entry_image_4
+        )
+        self.committeesIDEntry = Entry(
+            self.canvas,
+            bd=0,
+            bg="#D9D9D9",
+            fg="#000716",
+            highlightthickness=0
+        )
+        self.committeesIDEntry.place(
+            x=626.0,
+            y=153.0,
+            width=211.0,
+            height=27.0
+        )
+
+        self.canvas.create_text(
+            473.0,
+            155.0,
             anchor="nw",
             text="CommitteesID: ",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )
+
 
         treeview.bind("<Double-1>", selectRecord)
 

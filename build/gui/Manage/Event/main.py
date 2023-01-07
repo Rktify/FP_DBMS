@@ -86,7 +86,7 @@ class Event(Toplevel):
             selected = treeview.focus()
             eid = treeview.item(selected, 'values')[0]
             sql = "DELETE FROM Event WHERE EventID=%s"
-            value = (eid)
+            value = (eid,)
             cursor.execute(sql, value)
             connect.commit()
             treeview.delete(selected)

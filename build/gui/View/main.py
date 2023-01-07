@@ -226,6 +226,7 @@ class View(Toplevel):
             command=lambda: handle_button_press("TicketStats", self),
             relief="sunken",
             bg = '#FF7A00',
+            cursor = 'hand2',
             activebackground='#FF7A00',
             activeforeground='#FF7A00'
         )
@@ -246,6 +247,7 @@ class View(Toplevel):
             command=lambda: handle_button_press("Tickets", self),
             relief="sunken",
             bg = '#FF7A00',
+            cursor = 'hand2',
             activebackground='#FF7A00',
             activeforeground='#FF7A00'
         )
@@ -266,6 +268,7 @@ class View(Toplevel):
             command=lambda: handle_button_press("Positions", self),
             relief="sunken",
             bg = '#FF7A00',
+            cursor = 'hand2',
             activebackground='#FF7A00',
             activeforeground='#FF7A00'
         )
@@ -286,6 +289,7 @@ class View(Toplevel):
             command=lambda: handle_button_press("Participants", self),
             relief="sunken",
             bg = '#FF7A00',
+            cursor = 'hand2',
             activebackground='#FF7A00',
             activeforeground='#FF7A00'
         )
@@ -306,6 +310,7 @@ class View(Toplevel):
             command=lambda: handle_button_press("Committees", self),
             relief="sunken",
             bg = '#FF7A00',
+            cursor = 'hand2',
             activebackground='#FF7A00',
             activeforeground='#FF7A00'
         )
@@ -326,6 +331,7 @@ class View(Toplevel):
             command=lambda: handle_button_press("Events", self),
             relief="sunken",
             bg = '#FF7A00',
+            cursor = 'hand2',
             activebackground='#FF7A00',
             activeforeground='#FF7A00'
         )
@@ -346,6 +352,7 @@ class View(Toplevel):
             command=lambda: handle_button_press("Home", self),
             relief="sunken",
             bg = '#FF7A00',
+            cursor = 'hand2',
             activebackground='#FF7A00',
             activeforeground='#FF7A00'
         )

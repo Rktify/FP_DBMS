@@ -113,8 +113,6 @@ class userView(Toplevel):
             self.IDEntry.delete(0, END)
             return cursor.fetchall()
 
-
-
         Toplevel.__init__(self, *args, **kwargs)
         self.title("Evenementiel User View")
         self.geometry("853x556")
@@ -154,7 +152,9 @@ class userView(Toplevel):
             borderwidth=0,
             highlightthickness=0,
             command=lambda: handle_button_press("Tickets", self),
-            relief="flat"
+            relief="sunken",
+            bg = '#FF7A00',
+            cursor = 'hand2',
         )
         self.button_1.place(
             x=22.0,
@@ -171,7 +171,9 @@ class userView(Toplevel):
             borderwidth=0,
             highlightthickness=0,
             command=lambda: handle_button_press("Participants", self),
-            relief="flat"
+            relief="sunken",
+            bg = '#FF7A00',
+            cursor = 'hand2',
         )
         self.button_2.place(
             x=22.0,
@@ -188,7 +190,9 @@ class userView(Toplevel):
             borderwidth=0,
             highlightthickness=0,
             command=lambda: handle_button_press("Events", self),
-            relief="flat"
+            relief="sunken",
+            bg = '#FF7A00',
+            cursor = 'hand2',
         )
         self.button_3.place(
             x=22.0,
@@ -205,7 +209,9 @@ class userView(Toplevel):
             borderwidth=0,
             highlightthickness=0,
             command=lambda: handle_button_press("Back", self),
-            relief="flat"
+            relief="sunken",
+            bg = '#FF7A00',
+            cursor = 'hand2',
         )
         self.button_4.place(
             x=22.0,

@@ -81,7 +81,7 @@ class Position(Toplevel):
             selected = treeview.focus()
             eid = treeview.item(selected, 'values')[0]
             sql = "DELETE FROM JobPosition WHERE PositionID=%s"
-            value = (eid)
+            value = (eid,)
             cursor.execute(sql, value)
             connect.commit()
             treeview.delete(selected)
