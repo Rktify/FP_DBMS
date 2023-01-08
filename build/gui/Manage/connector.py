@@ -19,7 +19,7 @@ def getParticipants():
 def getTickets():
     cursor.execute("Select * from Tickets")
     return cursor.fetchall()
-def getTicketStats():
+def getTicketStatus():
     cursor.execute("Select * from TicketStatus")
     return cursor.fetchall()
 

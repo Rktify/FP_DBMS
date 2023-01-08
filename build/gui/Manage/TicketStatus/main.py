@@ -6,38 +6,35 @@ from .. import Redirect
 
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame4")
+ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame0")
 
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
-def committeesWindow():
-    Committees()
+def ticketstatusWindow():
+    TicketStatus()
 
-class Committees(Toplevel):
+class TicketStatus(Toplevel):
     def __init__(self, *args, **kwargs):
         def handle_button_press(btn_name, self):
             if btn_name == "Refresh":
                 print("Refreshed")
                 refresh()
             elif btn_name == "Add":
-                committeesID = self.committeesIDEntry.get()
-                name = self.nameEntry.get()
-                positionID = self.positionIDEntry.get()
-                eventID = self.eventIDEntry.get()
-                sql = "INSERT INTO Committees VALUES(%s, %s, %s, %s);"
-                value = (committeesID, name, positionID, eventID)
+                ticketstatsID = self.ticketstatusIDEntry.get()
+                name = self.ticketStatsEntry.get()
+                sql = "INSERT INTO TicketStatus VALUES(%s, %s);"
+                value = (ticketstatsID, name)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
+                print("Added into Database")
             elif btn_name == "Edit":
-                committeesID = self.committeesIDEntry.get()
-                name = self.nameEntry.get()
-                positionID = self.positionIDEntry.get()
-                eventID = self.eventIDEntry.get()
-                sql = "UPDATE Committees SET CommitteesID = %s, Name = %s, PositionID = %s, EventID = %s WHERE PositionID = %s"
-                value = (committeesID, name, positionID, eventID, committeesID)
+                ticketstatsID = self.ticketstatusIDEntry.get()
+                name = self.ticketStatsEntry.get()
+                sql = "UPDATE TicketStatus SET TicketStatusID = %s, TicketStatus = %s WHERE TicketStatusID = %s"
+                value = (ticketstatsID, name, ticketstatsID)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
@@ -46,56 +43,49 @@ class Committees(Toplevel):
                 removeRecord()
             elif btn_name == "Continue":
                 self.destroy()
-                Redirect.goParticipants()
+                Redirect.goPosition()
             elif btn_name == "Back":
                 self.destroy()
-                Redirect.goPosition()
+                Redirect.goTicketStatus()
 
         def refresh():
             display()
             clearRecord()
 
         def clearRecord():
-            self.committeesIDEntry.configure(state='normal')
-            self.eventIDEntry.delete(0, END)
-            self.nameEntry.delete(0, END)
-            self.positionIDEntry.delete(0, END)
-            self.committeesIDEntry.delete(0, END)
+            self.ticketstatusIDEntry.configure(state='normal')
+            self.ticketstatusIDEntry.delete(0, END)
+            self.ticketStatsEntry.delete(0, END)
 
         def selectRecord(e):
-            self.committeesIDEntry.configure(state='normal')
             clearRecord()
 
             selected = treeview.focus()
             values = treeview.item(selected, 'values')
 
-            self.committeesIDEntry.insert(0, values[0])
-            self.nameEntry.insert(0, values[1])
-            self.positionIDEntry.insert(0, values[2])
-            self.eventIDEntry.insert(0, values[3])
-            self.committeesIDEntry.configure(state='readonly')
+            self.ticketStatsEntry.insert(0, values[1])
+            self.ticketstatusIDEntry.insert(0, values[0])
+            self.ticketstatusIDEntry.configure(state='readonly')
 
             print("Selected")
 
         def removeRecord():
             selected = treeview.focus()
             eid = treeview.item(selected, 'values')[0]
-            sql = "DELETE FROM Committees WHERE CommitteesID=%s"
+            sql = "DELETE FROM TicketStatus WHERE TicketStatusID=%s"
             value = (eid,)
             cursor.execute(sql, value)
             connect.commit()
             treeview.delete(selected)
             refresh()
+            print("Removed from Database")
 
         Toplevel.__init__(self, *args, **kwargs)
-        self.title("Evenementiel Managing Committees")
+        self.title("Evenementiel Managing Ticket Status")
         self.geometry("853x556")
-        self.current_window = None
-
         self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x = 0, y = 0)
-
-        columns = {"Committees ID": ["Committees ID", 100], "Name": ["Name", 100], "Position ID": ["Position ID", 100], "Event ID": ["Event ID", 100]}
+        columns = {"Ticket Status ID": ["Ticket Status ID", 200],"Ticket Staus": ["Ticket Status", 200]}
 
         treeview = Treeview(
             self.canvas,
@@ -112,11 +102,12 @@ class Committees(Toplevel):
 
             treeview.place(x=20.0, y=62.0, width=400.0, height=358.0)
             treeview.delete(*treeview.get_children())
-            event_data = getCommittees()
+            event_data = getTicketStatus()
             for row in event_data:
                 treeview.insert("", "end", values=row)
 
         display()
+        treeview.bind("<Double-1>", selectRecord)
 
         self.canvas.create_rectangle(0.0, 0.0, 853.0, 556.0, fill="#FFFFFF", outline="")
 
@@ -152,7 +143,7 @@ class Committees(Toplevel):
             484.0,
             17.0,
             anchor="nw",
-            text="Committees Table",
+            text="Ticket Status Table",
             fill="#000000",
             font=("Encode Sans SC", 37 * -1)
         )
@@ -174,61 +165,31 @@ class Committees(Toplevel):
             outline="")
 
         entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
-        entry_bg_1 = self.canvas.create_image(711.5,304.5,image=entry_image_1)
-        self.eventIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.eventIDEntry.place(x=606.0,y=290.0,width=211.0,height=27.0)
-
+        entry_bg_1 = self.canvas.create_image(718.5,218.5,image=entry_image_1)
+        self.ticketStatsEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.ticketStatsEntry.place(x=613.0,y=204.0,width=211.0,height=27.0)
         self.canvas.create_text(
-            465.0,
-            293.0,
+            460.0,
+            204.0,
             anchor="nw",
-            text="EventID: ",
+            text="Ticket Status:",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )
 
         entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
-        entry_bg_2 = self.canvas.create_image(711.5,258.5,image=entry_image_2)
-        self.positionIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.positionIDEntry.place( x=606.0, y=244.0, width=211.0, height=27.0)
+        entry_bg_2 = self.canvas.create_image(718.5,172.5,image=entry_image_2)
+        self.ticketstatusIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.ticketstatusIDEntry.place( x=613.0,y=158.0, width=211.0, height=27.0)
 
         self.canvas.create_text(
-            465.0, 247.0,
+            460.0,
+            160.0,
             anchor="nw",
-            text="PositionID: ",
+            text="TicketStatusID:",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )
-
-        entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
-        entry_bg_3 = self.canvas.create_image(711.5,213.5,image=entry_image_3)
-        self.nameEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.nameEntry.place(x=606.0,y=199.0,width=211.0,height=27.0)
-
-        self.canvas.create_text(
-            465.0,
-            201.0,
-            anchor="nw",
-            text="Name: ",
-            fill="#000000",
-            font=("Encode Sans SC", 19 * -1)
-        )
-
-        entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
-        entry_bg_4 = self.canvas.create_image(712.5,167.5,image=entry_image_4)
-        self.committeesIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.committeesIDEntry.place(x=607.0,y=153.0,width=211.0,height=27.0)
-
-        self.canvas.create_text(
-            465.0,
-            155.0,
-            anchor="nw",
-            text="CommitteesID: ",
-            fill="#000000",
-            font=("Encode Sans SC", 19 * -1)
-        )
-
-        treeview.bind("<Double-1>", selectRecord)
 
         self.resizable(False, False)
         self.mainloop()

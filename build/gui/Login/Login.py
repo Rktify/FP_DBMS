@@ -157,5 +157,8 @@ class Login(Toplevel):
             fill="#FFFFFF",
             font=("Encode Sans SC", 44 * -1)
         )
+
+        # self.bind("<Return>", getDetails(self))
+
         self.resizable(False, False)
         self.mainloop()

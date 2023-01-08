@@ -50,7 +50,7 @@ class Participants(Toplevel):
                 Redirect.goPosition()
             elif btn_name == "Back":
                 self.destroy()
-                # Redirect.goTicketStats()
+                Redirect.goTicketStatus()
 
 
         def refresh():
@@ -93,7 +93,8 @@ class Participants(Toplevel):
         Toplevel.__init__(self, *args, **kwargs)
         self.title("Evenementiel Managing Participants")
         self.geometry("853x556")
-
+        self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
+        self.canvas.place(x = 0, y = 0)
         columns = {"Participants ID": ["Participants ID", 100],"Name": ["Name", 100],"Ticket ID": ["Ticket ID", 100], "Event ID": ["Event ID", 100]}
 
         treeview = Treeview(
@@ -118,24 +119,11 @@ class Participants(Toplevel):
         display()
         treeview.bind("<Double-1>", selectRecord)
 
-        self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
-        self.canvas.place(x = 0, y = 0)
+        self.canvas.create_rectangle(0.0, 0.0, 853.0, 556.0, fill="#FFFFFF", outline="")
 
-        self.canvas.create_rectangle(
-            0.0,
-            0.0,
-            853.0,
-            556.0,
-            fill="#FFFFFF",
-            outline="")
+        self.canvas.create_rectangle(0.0, 501.0, 853.0, 556.0, fill="#FF7A00", outline="")
 
-        self.canvas.create_rectangle(
-            0.0,
-            501.0,
-            853.0,
-            556.0,
-            fill="#FF7A00",
-            outline="")
+        self.canvas.create_rectangle(43.0,0.0,896.0,80.0,fill="#FF7A00",outline="")
 
         button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
         self.button_1 = Button(self.canvas,image=button_image_1, borderwidth=0, highlightthickness=0, command=lambda: handle_button_press("Edit", self), relief="sunken", cursor="hand2")
@@ -216,7 +204,7 @@ class Participants(Toplevel):
         )
 
         self.canvas.create_text(
-            542.0,
+            484.0,
             17.0,
             anchor="nw",
             text="Participants Table",
