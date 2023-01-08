@@ -1,5 +1,6 @@
 from pathlib import Path
 from tkinter import *
+from tkinter import messagebox
 from tkinter.ttk import Treeview
 from ..connector import *
 from .. import Redirect
@@ -24,8 +25,9 @@ class Event(Toplevel):
                 time = self.timeEntry.get()
                 date = self.dateEntry.get()
                 location = self.locationEntry.get()
-                eventName = self.eventNameEntry.get()
+                eventName = self.nameEntry.get()
                 eventID = self.eventIDEntry.get()
+                testEmpty(time, date, location, eventName, eventID)
                 sql = "INSERT INTO Event VALUES(%s, %s, %s, %s, %s);"
                 value = (eventID, eventName, location, date, time)
                 cursor.execute(sql, value)
@@ -36,8 +38,9 @@ class Event(Toplevel):
                 time = self.timeEntry.get()
                 date = self.dateEntry.get()
                 location = self.locationEntry.get()
-                eventName = self.eventNameEntry.get()
+                eventName = self.nameEntry.get()
                 eventID = self.eventIDEntry.get()
+                testEmpty(time, date, location, eventName, eventID)
                 sql = "UPDATE Event SET EventID = %s, EventName = %s, Location = %s, Date = %s, Time = %s WHERE EventID = %s"
                 value = (eventID, eventName, location, date, time, eventID)
                 cursor.execute(sql, value)
@@ -53,6 +56,12 @@ class Event(Toplevel):
                 self.destroy()
                 Redirect.goSelection()
 
+        def testEmpty(a,b,c,d,e):
+            if a == "" or b == "" or c == "" or d == "" or e == "":
+                messagebox.showinfo("Error", "Please fill in all the fields")
+                return
+            else:
+                return
 
         def refresh():
             display()
@@ -63,7 +72,7 @@ class Event(Toplevel):
             self.timeEntry.delete(0, END)
             self.dateEntry.delete(0, END)
             self.locationEntry.delete(0, END)
-            self.eventNameEntry.delete(0, END)
+            self.nameEntry.delete(0, END)
             self.eventIDEntry.delete(0, END)
 
         def selectRecord(e):
@@ -76,7 +85,7 @@ class Event(Toplevel):
             self.timeEntry.insert(0, values[4])
             self.dateEntry.insert(0, values[3])
             self.locationEntry.insert(0, values[2])
-            self.eventNameEntry.insert(0, values[1])
+            self.nameEntry.insert(0, values[1])
             self.eventIDEntry.insert(0, values[0])
             self.eventIDEntry.configure(state='readonly')
 
@@ -155,8 +164,8 @@ class Event(Toplevel):
 
         entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
         entry_bg_1 = self.canvas.create_image(711.5,304.5,image=entry_image_1)
-        self.timeEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.timeEntry.place(x=606.0,y=290.0,width=211.0,height=27.0)
+        self.eventIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.eventIDEntry.place(x=606.0,y=107.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
             480.0,
@@ -169,8 +178,8 @@ class Event(Toplevel):
 
         entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
         entry_bg_2 = self.canvas.create_image(711.5,258.5,image=entry_image_2)
-        self.dateEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.dateEntry.place( x=606.0, y=244.0, width=211.0, height=27.0)
+        self.nameEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.nameEntry.place( x=606.0, y=153.0, width=211.0, height=27.0)
 
         self.canvas.create_text(
             480.0, 247.0,
@@ -196,8 +205,8 @@ class Event(Toplevel):
 
         entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
         entry_bg_4 = self.canvas.create_image(712.5,167.5,image=entry_image_4)
-        self.eventNameEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.eventNameEntry.place(x=607.0,y=153.0,width=211.0,height=27.0)
+        self.dateEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.dateEntry.place(x=606.0,y=244.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
             480.0,
@@ -210,8 +219,8 @@ class Event(Toplevel):
 
         entry_image_5 = PhotoImage(file=relative_to_assets("entry_5.png"))
         entry_bg_5 = self.canvas.create_image(711.5,121.5,image=entry_image_5)
-        self.eventIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.eventIDEntry.place(x=606.0,y=107.0,width=211.0,height=27.0)
+        self.timeEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.timeEntry.place(x=606.0,y=290.0,width=211.0,height=27.0)  
 
         self.canvas.create_text(
             480.0,

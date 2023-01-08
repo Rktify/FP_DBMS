@@ -1,5 +1,6 @@
 from pathlib import Path
 from tkinter import *
+from tkinter import messagebox
 from tkinter.ttk import Treeview
 from ..connector import *
 from .. import Redirect
@@ -26,6 +27,7 @@ class Participants(Toplevel):
                 name = self.nameEntry.get()
                 ticketID = self.ticketIDEntry.get()
                 eventID = self.eventIDEntry.get()
+                testEmpty(participantsID, name, ticketID, eventID)
                 sql = "INSERT INTO Participants VALUES(%s, %s, %s, %s);"
                 value = (participantsID, name, ticketID, eventID)
                 cursor.execute(sql, value)
@@ -37,6 +39,7 @@ class Participants(Toplevel):
                 name = self.nameEntry.get()
                 ticketID = self.ticketIDEntry.get()
                 eventID = self.eventIDEntry.get()
+                testEmpty(participantsID, name, ticketID, eventID)
                 sql = "UPDATE Participants SET ParticipantsID = %s, Name = %s, TicketID = %s, EventID = %s WHERE ParticipantsID = %s"
                 value = (participantsID, name, ticketID, eventID, participantsID)
                 cursor.execute(sql, value)
@@ -47,11 +50,17 @@ class Participants(Toplevel):
                 removeRecord()
             elif btn_name == "Continue":
                 self.destroy()
-                Redirect.goPosition()
+                Redirect.goSelection()
             elif btn_name == "Back":
                 self.destroy()
                 Redirect.goTicketStatus()
 
+        def testEmpty(a,b,c,d):
+            if a == "" or b == "" or c == "" or d == "":
+                messagebox.showinfo("Error", "Please fill in all the fields")
+                return
+            else:
+                return
 
         def refresh():
             display()
@@ -151,10 +160,11 @@ class Participants(Toplevel):
 
         entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
         entry_bg_1 = self.canvas.create_image(711.5,304.5,image=entry_image_1)
-        self.eventIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.eventIDEntry.place(x=606.0,y=290.0,width=211.0,height=27.0)
+        self.participantsIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.participantsIDEntry.place(x=607.0,y=153.0,width=211.0,height=27.0)
+
         self.canvas.create_text(
-            480.0,
+            460.0,
             293.0,
             anchor="nw",
             text="EventID: ",
@@ -164,11 +174,11 @@ class Participants(Toplevel):
 
         entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
         entry_bg_2 = self.canvas.create_image(711.5,258.5,image=entry_image_2)
-        self.ticketIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.ticketIDEntry.place( x=606.0, y=244.0, width=211.0, height=27.0)
+        self.nameEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.nameEntry.place(x=606.0,y=199.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
-            480.0, 247.0,
+            460.0, 247.0,
             anchor="nw",
             text="TicketID: ",
             fill="#000000",
@@ -177,11 +187,12 @@ class Participants(Toplevel):
 
         entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
         entry_bg_3 = self.canvas.create_image(711.5,213.5,image=entry_image_3)
-        self.nameEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.nameEntry.place(x=606.0,y=199.0,width=211.0,height=27.0)
+        self.ticketIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.ticketIDEntry.place( x=606.0, y=244.0, width=211.0, height=27.0)
+        
 
         self.canvas.create_text(
-            480.0,
+            460.0,
             201.0,
             anchor="nw",
             text="Name: ",
@@ -191,11 +202,12 @@ class Participants(Toplevel):
 
         entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
         entry_bg_4 = self.canvas.create_image(712.5,167.5,image=entry_image_4)
-        self.participantsIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.participantsIDEntry.place(x=607.0,y=153.0,width=211.0,height=27.0)
+        self.eventIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.eventIDEntry.place(x=606.0,y=290.0,width=211.0,height=27.0)
+        
 
         self.canvas.create_text(
-            480.0,
+            460.0,
             155.0,
             anchor="nw",
             text="ParticipantsID:",

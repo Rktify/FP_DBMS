@@ -1,5 +1,6 @@
 from pathlib import Path
 from tkinter import *
+from tkinter import messagebox
 from tkinter.ttk import Treeview
 from ..connector import *
 from .. import Redirect
@@ -24,6 +25,7 @@ class TicketStatus(Toplevel):
             elif btn_name == "Add":
                 ticketstatsID = self.ticketstatusIDEntry.get()
                 name = self.ticketStatsEntry.get()
+                testEmpty(ticketstatsID, name)
                 sql = "INSERT INTO TicketStatus VALUES(%s, %s);"
                 value = (ticketstatsID, name)
                 cursor.execute(sql, value)
@@ -33,6 +35,7 @@ class TicketStatus(Toplevel):
             elif btn_name == "Edit":
                 ticketstatsID = self.ticketstatusIDEntry.get()
                 name = self.ticketStatsEntry.get()
+                testEmpty(ticketstatsID, name)
                 sql = "UPDATE TicketStatus SET TicketStatusID = %s, TicketStatus = %s WHERE TicketStatusID = %s"
                 value = (ticketstatsID, name, ticketstatsID)
                 cursor.execute(sql, value)
@@ -43,10 +46,17 @@ class TicketStatus(Toplevel):
                 removeRecord()
             elif btn_name == "Continue":
                 self.destroy()
-                Redirect.goPosition()
+                Redirect.goParticipants()
             elif btn_name == "Back":
                 self.destroy()
-                Redirect.goTicketStatus()
+                Redirect.goTickets()
+
+        def testEmpty(a,b):
+            if a == "" or b == "":
+                messagebox.showinfo("Error", "Please fill in all the fields")
+                return
+            else:
+                return
 
         def refresh():
             display()
@@ -166,8 +176,9 @@ class TicketStatus(Toplevel):
 
         entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
         entry_bg_1 = self.canvas.create_image(718.5,218.5,image=entry_image_1)
-        self.ticketStatsEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.ticketStatsEntry.place(x=613.0,y=204.0,width=211.0,height=27.0)
+        self.ticketstatusIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.ticketstatusIDEntry.place( x=613.0,y=158.0, width=211.0, height=27.0)
+        
         self.canvas.create_text(
             460.0,
             204.0,
@@ -179,8 +190,8 @@ class TicketStatus(Toplevel):
 
         entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
         entry_bg_2 = self.canvas.create_image(718.5,172.5,image=entry_image_2)
-        self.ticketstatusIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.ticketstatusIDEntry.place( x=613.0,y=158.0, width=211.0, height=27.0)
+        self.ticketStatsEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.ticketStatsEntry.place(x=613.0,y=204.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
             460.0,

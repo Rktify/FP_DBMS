@@ -1,5 +1,6 @@
 from pathlib import Path
 from tkinter import *
+from tkinter import messagebox
 from tkinter.ttk import Treeview
 from ..connector import *
 from .. import Redirect
@@ -26,6 +27,7 @@ class Committees(Toplevel):
                 name = self.nameEntry.get()
                 positionID = self.positionIDEntry.get()
                 eventID = self.eventIDEntry.get()
+                testEmpty(committeesID, name, positionID, eventID)
                 sql = "INSERT INTO Committees VALUES(%s, %s, %s, %s);"
                 value = (committeesID, name, positionID, eventID)
                 cursor.execute(sql, value)
@@ -36,6 +38,7 @@ class Committees(Toplevel):
                 name = self.nameEntry.get()
                 positionID = self.positionIDEntry.get()
                 eventID = self.eventIDEntry.get()
+                testEmpty(committeesID, name, positionID, eventID)
                 sql = "UPDATE Committees SET CommitteesID = %s, Name = %s, PositionID = %s, EventID = %s WHERE PositionID = %s"
                 value = (committeesID, name, positionID, eventID, committeesID)
                 cursor.execute(sql, value)
@@ -46,10 +49,17 @@ class Committees(Toplevel):
                 removeRecord()
             elif btn_name == "Continue":
                 self.destroy()
-                Redirect.goParticipants()
+                Redirect.goTickets()
             elif btn_name == "Back":
                 self.destroy()
                 Redirect.goPosition()
+
+        def testEmpty(a,b,c,d):
+            if a == "" or b == "" or c == "" or d == "":
+                messagebox.showinfo("Error", "Please fill in all the fields")
+                return
+            else:
+                return
 
         def refresh():
             display()
@@ -175,8 +185,8 @@ class Committees(Toplevel):
 
         entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
         entry_bg_1 = self.canvas.create_image(711.5,304.5,image=entry_image_1)
-        self.eventIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.eventIDEntry.place(x=606.0,y=290.0,width=211.0,height=27.0)
+        self.committeesIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.committeesIDEntry.place(x=607.0,y=153.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
             465.0,
@@ -189,8 +199,8 @@ class Committees(Toplevel):
 
         entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
         entry_bg_2 = self.canvas.create_image(711.5,258.5,image=entry_image_2)
-        self.positionIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.positionIDEntry.place( x=606.0, y=244.0, width=211.0, height=27.0)
+        self.nameEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.nameEntry.place(x=606.0,y=199.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
             465.0, 247.0,
@@ -202,8 +212,9 @@ class Committees(Toplevel):
 
         entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
         entry_bg_3 = self.canvas.create_image(711.5,213.5,image=entry_image_3)
-        self.nameEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.nameEntry.place(x=606.0,y=199.0,width=211.0,height=27.0)
+        self.positionIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.positionIDEntry.place( x=606.0, y=244.0, width=211.0, height=27.0)
+        
 
         self.canvas.create_text(
             465.0,
@@ -216,8 +227,9 @@ class Committees(Toplevel):
 
         entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
         entry_bg_4 = self.canvas.create_image(712.5,167.5,image=entry_image_4)
-        self.committeesIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.committeesIDEntry.place(x=607.0,y=153.0,width=211.0,height=27.0)
+        self.eventIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.eventIDEntry.place(x=606.0,y=290.0,width=211.0,height=27.0)
+        
 
         self.canvas.create_text(
             465.0,
