@@ -109,7 +109,7 @@ class Tickets(Toplevel):
         self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x = 0, y = 0)
 
-        columns = {"Ticket ID": ["Ticket ID", 50],"Event ID": ["Event ID", 100],"Type": ["Type", 100],"Price": ["Price", 100],"TicketStatusID": ["TicketStatusID", 50]}
+        columns = {"Ticket ID": ["Ticket ID", 50],"Event ID": ["Event ID", 100],"Type": ["Type", 100],"Price": ["Price", 100],"TicketStatusID": ["TicketStatusID", 46]}
 
         treeview = Treeview(
             self.canvas,

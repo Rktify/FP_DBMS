@@ -40,7 +40,7 @@ class View(Toplevel):
                     "Event Name": ["Event Name", 100],
                     "Location": ["Location", 100],
                     "Date": ["Date", 100],
-                    "Time": ["Time", 100]
+                    "Time": ["Time", 96]
                 }
 
                 self.treeview = Treeview(
@@ -64,7 +64,7 @@ class View(Toplevel):
                     "Committees ID": ["Committees ID", 100],
                     "Name": ["Name", 200],
                     "Position ID": ["Position ID", 100],
-                    "Event ID": ["Event ID", 100]
+                    "Event ID": ["Event ID", 96]
                 }
 
                 self.treeview = Treeview(
@@ -88,7 +88,7 @@ class View(Toplevel):
                     "Participants ID": ["Participants ID", 100],
                     "Name": ["Name", 200],
                     "Ticket ID": ["Ticket ID", 100],
-                    "Event ID": ["Event ID", 100]
+                    "Event ID": ["Event ID", 96]
                 }
 
                 self.treeview = Treeview(
@@ -112,7 +112,7 @@ class View(Toplevel):
                     "Position ID": ["Position ID", 100],
                     "Name": ["Name", 200],
                     "Salary": ["Salary", 100],
-                    "Event ID": ["Event ID", 100]
+                    "Event ID": ["Event ID", 96]
                 }
 
                 self.treeview = Treeview(
@@ -137,7 +137,7 @@ class View(Toplevel):
                     "Event ID": ["Event ID", 100],
                     "Price": ["Price", 100],
                     "Ticket Type": ["Ticket Type", 100],
-                    "Status ID": ["Status ID", 100]
+                    "Status ID": ["Status ID", 96]
                 }
 
                 self.treeview = Treeview(
@@ -159,7 +159,7 @@ class View(Toplevel):
                 print("Tickets Status pressed")
                 self.columns = {
                     "Ticket Status ID": ["Ticket Status ID", 250],
-                    "Ticket Status": ["Ticket Status", 250]
+                    "Ticket Status": ["Ticket Status", 246]
                 }
 
                 self.treeview = Treeview(

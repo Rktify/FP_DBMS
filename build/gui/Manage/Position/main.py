@@ -105,7 +105,7 @@ class Position(Toplevel):
         self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x = 0, y = 0)
 
-        columns = {"Position ID": ["Position ID", 100],"Position Name": ["Position Name", 100],"Salary": ["Salary", 100],"Event ID": ["Event ID", 100]}
+        columns = {"Position ID": ["Position ID", 100],"Position Name": ["Position Name", 100],"Salary": ["Salary", 100],"Event ID": ["Event ID", 96]}
 
         treeview = Treeview(self.canvas, columns=list(columns.keys()), show="headings", height=200, selectmode="browse")
 
