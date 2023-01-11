@@ -2,6 +2,7 @@ import gui.Selection.mainSelection
 import gui.View.main
 import gui.View.userview
 import gui.Login.Login
+import gui.Signup.Signup
 
 def goView():
     gui.View.main.viewWindow()
@@ -14,3 +15,6 @@ def gouserView():
 
 def goLogin():
     gui.Login.Login.loginWindow()
+
+def goSignup():
+    gui.Signup.Signup.signupWindow()

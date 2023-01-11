@@ -24,24 +24,24 @@ class Participants(Toplevel):
                 refresh()
             elif btn_name == "Add":
                 participantsID = self.participantsIDEntry.get()
-                name = self.nameEntry.get()
+                userID = self.userIDEntry.get()
                 ticketID = self.ticketIDEntry.get()
                 eventID = self.eventIDEntry.get()
-                testEmpty(participantsID, name, ticketID, eventID)
+                testEmpty(participantsID, userID, ticketID, eventID)
                 sql = "INSERT INTO Participants VALUES(%s, %s, %s, %s);"
-                value = (participantsID, name, ticketID, eventID)
+                value = (participantsID, userID, ticketID, eventID)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
                 print("Added into Database")
             elif btn_name == "Edit":
                 participantsID = self.participantsIDEntry.get()
-                name = self.nameEntry.get()
+                userID = self.userIDEntry.get()
                 ticketID = self.ticketIDEntry.get()
                 eventID = self.eventIDEntry.get()
-                testEmpty(participantsID, name, ticketID, eventID)
-                sql = "UPDATE Participants SET ParticipantsID = %s, Name = %s, TicketID = %s, EventID = %s WHERE ParticipantsID = %s"
-                value = (participantsID, name, ticketID, eventID, participantsID)
+                testEmpty(participantsID, userID, ticketID, eventID)
+                sql = "UPDATE Participants SET ParticipantsID = %s, UserID = %s, TicketID = %s, EventID = %s WHERE ParticipantsID = %s"
+                value = (participantsID, userID , ticketID, eventID, participantsID)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
@@ -70,7 +70,7 @@ class Participants(Toplevel):
             self.participantsIDEntry.configure(state='normal')
             self.eventIDEntry.delete(0, END)
             self.ticketIDEntry.delete(0, END)
-            self.nameEntry.delete(0, END)
+            self.userIDEntry.delete(0, END)
             self.participantsIDEntry.delete(0, END)
 
         def selectRecord(e):
@@ -81,7 +81,7 @@ class Participants(Toplevel):
 
             self.eventIDEntry.insert(0, values[3])
             self.ticketIDEntry.insert(0, values[2])
-            self.nameEntry.insert(0, values[1])
+            self.userIDEntry.insert(0, values[1])
             self.participantsIDEntry.insert(0, values[0])
             self.participantsIDEntry.configure(state='readonly')
 
@@ -104,7 +104,7 @@ class Participants(Toplevel):
         self.geometry("853x556")
         self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x = 0, y = 0)
-        columns = {"Participants ID": ["Participants ID", 100],"Name": ["Name", 100],"Ticket ID": ["Ticket ID", 100], "Event ID": ["Event ID", 96]}
+        columns = {"Participants ID": ["Participants ID", 100],"User ID": ["User ID", 100],"Ticket ID": ["Ticket ID", 100], "Event ID": ["Event ID", 96]}
 
         treeview = Treeview(
             self.canvas,
@@ -174,8 +174,8 @@ class Participants(Toplevel):
 
         entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
         entry_bg_2 = self.canvas.create_image(711.5,258.5,image=entry_image_2)
-        self.nameEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.nameEntry.place(x=606.0,y=199.0,width=211.0,height=27.0)
+        self.userIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.userIDEntry.place(x=606.0,y=199.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
             460.0, 247.0,
@@ -195,7 +195,7 @@ class Participants(Toplevel):
             460.0,
             201.0,
             anchor="nw",
-            text="Name: ",
+            text="UserID: ",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )

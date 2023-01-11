@@ -24,3 +24,26 @@ def getTicketStats():
 def getTicketss():
     cursor.execute("SELECT t.TicketID, e.EventName, t.Price, t.TicketType, s.TicketStatus from Tickets t join Event e ON t.EventID = e.EventID join TicketStatus s ON t.TicketStatusID = s.TicketStatusID;")
     return cursor.fetchall()
+def getnextID():
+    cursor.execute("Select UserID from UserInfo")
+    x = [i[0] for i in cursor.fetchall()]
+    return (x[-1] + 1)
+def checkuserName(id, user):
+    cursor.execute(f"Select userName from UserInfo WHERE UserID = {id}")
+    x = [i[0] for i in cursor.fetchall()]
+    if user == x[0]:
+        return True
+    else:
+        return False
+def checkPassword(id, passw):
+    cursor.execute(f"Select password from UserInfo WHERE UserID = {id}")
+    x = [i[0] for i in cursor.fetchall()]
+    if passw == x[0]:
+        return True
+    else:
+        return False
+
+def forgotPassword(user):
+    cursor.execute(f"Select password from UserInfo WHERE userName = '{user}'")
+    x = [i[0] for i in cursor.fetchall()]
+    return x[0]

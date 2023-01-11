@@ -111,7 +111,7 @@ class userView(Toplevel):
 
         def handleID():
             pid = self.IDEntry.get()
-            sql = "Select p.Name, t.TicketID, s.TicketStatus, e.EventName, e.Location, e.Date, e.Time from Participants p join Tickets t ON p.TicketID = t.TicketID join Event e ON t.EventID = e.EventID join TicketStatus s ON t.TicketStatusID = s.TicketStatusID WHERE ParticipantsID = %s;"
+            sql = "Select u.firstName, p.TicketID, s.TicketStatus, e.EventName, e.Location, e.Date, e.Time from Participants p join UserInfo u ON u.UserID = p.UserID join Event e ON e.EventID = p.EventID join Tickets t ON t.EventID = e.EventID join TicketStatus s ON t.TicketStatusID = s.TicketStatusID WHERE ParticipantsID = %s;"
             value = (pid,)
             cursor.execute(sql, value)
             self.IDEntry.delete(0, END)

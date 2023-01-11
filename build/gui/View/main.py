@@ -86,7 +86,7 @@ class View(Toplevel):
                 print("Participants pressed")
                 self.columns = {
                     "Participants ID": ["Participants ID", 100],
-                    "Name": ["Name", 200],
+                    "UserID": ["UserID", 200],
                     "Ticket ID": ["Ticket ID", 100],
                     "Event ID": ["Event ID", 96]
                 }
