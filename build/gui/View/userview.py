@@ -23,7 +23,7 @@ class userView(Toplevel):
             elif tableName == "Participants":
                 self.event_data = handleID()
             elif tableName == "Tickets":
-                self.event_data = getTickets()
+                self.event_data = getTicketss()
             for row in self.event_data:
                 self.treeview.insert("", "end", values=row)
         def handle_button_press(btn_name, self):
@@ -31,10 +31,10 @@ class userView(Toplevel):
                 print("Events pressed")
                 self.columns = {
                     "Event ID": ["Event ID", 100],
-                    "Event Name": ["Event Name", 100],
+                    "Event Name": ["Event Name", 160],
                     "Location": ["Location", 100],
                     "Date": ["Date", 100],
-                    "Time": ["Time", 100]
+                    "Time": ["Time", 96]
                 }
 
                 self.treeview = Treeview(
@@ -49,15 +49,19 @@ class userView(Toplevel):
                     self.treeview.heading(idx, text=txt[0])
                     self.treeview.column(idx, width=txt[1])
 
-                self.treeview.place(x=295.0, y=80.0, width=500.0, height=300.0)
+                self.treeview.place(x=265.0, y=80.0, width=560.0, height=300.0)
                 handle_refresh(self, btn_name)
             elif btn_name == "Participants":
                 print("Participants pressed")
                 self.columns = {
-                    "Participants ID": ["Participants ID", 100],
-                    "Name": ["Name", 200],
-                    "Ticket ID": ["Ticket ID", 100],
-                    "Event ID": ["Event ID", 100]
+                    "Name": ["Name", 80],
+                    "Ticket ID": ["Ticket ID", 80],
+                    "Ticket Status": ["Ticket Status", 80],
+                    "Event Name": ["Event Name", 80],
+                    "Location": ["Location", 80],
+                    "Date": ["Date", 80],
+                    "Time": ["Time", 76],
+
                 }
 
                 self.treeview = Treeview(
@@ -72,16 +76,16 @@ class userView(Toplevel):
                     self.treeview.heading(idx, text=txt[0])
                     self.treeview.column(idx, width=txt[1])
 
-                self.treeview.place(x=295.0, y=80.0, width=500.0, height=300.0)
+                self.treeview.place(x=265.0, y=80.0, width=560.0, height=300.0)
                 handle_refresh(self, btn_name)
             elif btn_name == "Tickets":
                 print("Tickets pressed")
                 self.columns = {
                     "Ticket ID": ["Ticket ID", 50],
-                    "Event ID": ["Event ID", 100],
+                    "Event Name": ["Event Name", 160],
                     "Price": ["Price", 100],
                     "Ticket Type": ["Ticket Type", 100],
-                    "Status ID": ["Status ID", 100]
+                    "Status": ["Status", 96]
                 }
 
                 self.treeview = Treeview(
@@ -96,7 +100,7 @@ class userView(Toplevel):
                     self.treeview.heading(idx, text=txt[0])
                     self.treeview.column(idx, width=txt[1])
 
-                self.treeview.place(x=295.0, y=80.0, width=500.0, height=300.0)
+                self.treeview.place(x=265.0, y=80.0, width=560.0, height=300.0)
                 handle_refresh(self, btn_name)
 
             elif btn_name == "Back":
@@ -107,7 +111,7 @@ class userView(Toplevel):
 
         def handleID():
             pid = self.IDEntry.get()
-            sql = "SELECT * FROM Participants WHERE ParticipantsID = %s"
+            sql = "Select p.Name, t.TicketID, s.TicketStatus, e.EventName, e.Location, e.Date, e.Time from Participants p join Tickets t ON p.TicketID = t.TicketID join Event e ON t.EventID = e.EventID join TicketStatus s ON t.TicketStatusID = s.TicketStatusID WHERE ParticipantsID = %s;"
             value = (pid,)
             cursor.execute(sql, value)
             self.IDEntry.delete(0, END)
