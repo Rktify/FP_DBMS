@@ -24,10 +24,20 @@ def getTicketStats():
 def getTicketss():
     cursor.execute("SELECT t.TicketID, e.EventName, t.Price, t.TicketType, s.TicketStatus from Tickets t join Event e ON t.EventID = e.EventID join TicketStatus s ON t.TicketStatusID = s.TicketStatusID;")
     return cursor.fetchall()
+def getPurchase():
+    cursor.execute("SELECT t.TicketID, t.TicketType, e.EventID, e.EventName, e.Location, e.Date, e.Time FROM Tickets t JOIN Event e ON e.EventID = t.EventID")
+    return cursor.fetchall()
+
 def getnextID():
     cursor.execute("Select UserID from UserInfo")
     x = [i[0] for i in cursor.fetchall()]
     return (x[-1] + 1)
+
+def getnextpurchaseID():
+    cursor.execute("Select PurchaseID from Purchase")
+    x = [i[0] for i in cursor.fetchall()]
+    return (x[-1] + 1)
+
 def checkuserName(id, user):
     cursor.execute(f"Select userName from UserInfo WHERE UserID = {id}")
     x = [i[0] for i in cursor.fetchall()]
@@ -35,6 +45,7 @@ def checkuserName(id, user):
         return True
     else:
         return False
+
 def checkPassword(id, passw):
     cursor.execute(f"Select password from UserInfo WHERE UserID = {id}")
     x = [i[0] for i in cursor.fetchall()]
@@ -44,6 +55,8 @@ def checkPassword(id, passw):
         return False
 
 def forgotPassword(user):
-    cursor.execute(f"Select password from UserInfo WHERE userName = '{user}'")
-    x = [i[0] for i in cursor.fetchall()]
-    return x[0]
+    cursor.execute(f"Select Password, UserID from UserInfo WHERE userName = '{user}'")
+    y = cursor.fetchall()
+    x = [i[0] for i in y]
+    z = [i[1] for i in y]
+    return x[0], z[0]

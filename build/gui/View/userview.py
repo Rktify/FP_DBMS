@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter.ttk import Treeview
 from .connector import *
 from .. import Redirect
+from ..Login import Login
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame0")
@@ -20,7 +21,7 @@ class userView(Toplevel):
             self.treeview.delete(*self.treeview.get_children())
             if tableName == "Events":
                 self.event_data = getEvents()
-            elif tableName == "Participants":
+            elif tableName == "Purchase":
                 self.event_data = handleID()
             elif tableName == "Tickets":
                 self.event_data = getTicketss()
@@ -51,41 +52,17 @@ class userView(Toplevel):
 
                 self.treeview.place(x=265.0, y=80.0, width=560.0, height=300.0)
                 handle_refresh(self, btn_name)
-            elif btn_name == "Participants":
-                print("Participants pressed")
+            elif btn_name == "Purchase":
+                print("Purchase pressed")
                 self.columns = {
-                    "Name": ["Name", 80],
-                    "Ticket ID": ["Ticket ID", 80],
-                    "Ticket Status": ["Ticket Status", 80],
-                    "Event Name": ["Event Name", 80],
-                    "Location": ["Location", 80],
-                    "Date": ["Date", 80],
-                    "Time": ["Time", 76],
-
-                }
-
-                self.treeview = Treeview(
-                    self,
-                    columns=list(self.columns.keys()),
-                    show="headings",
-                    height=200,
-                    selectmode="browse",
-                )
-
-                for idx, txt in self.columns.items():
-                    self.treeview.heading(idx, text=txt[0])
-                    self.treeview.column(idx, width=txt[1])
-
-                self.treeview.place(x=265.0, y=80.0, width=560.0, height=300.0)
-                handle_refresh(self, btn_name)
-            elif btn_name == "Tickets":
-                print("Tickets pressed")
-                self.columns = {
-                    "Ticket ID": ["Ticket ID", 50],
-                    "Event Name": ["Event Name", 160],
-                    "Price": ["Price", 100],
-                    "Ticket Type": ["Ticket Type", 100],
-                    "Status": ["Status", 96]
+                    "PurchaseID": ["PurchaseID", 70],
+                    "Name": ["Name", 70],
+                    "Ticket Type": ["Ticket Type", 70],
+                    "Ticket Status": ["Ticket Status", 70],
+                    "Event Name": ["Event Name", 70],
+                    "Location": ["Location", 70],
+                    "Date": ["Date", 70],
+                    "Time": ["Time", 66],
                 }
 
                 self.treeview = Treeview(
@@ -106,15 +83,14 @@ class userView(Toplevel):
             elif btn_name == "Back":
                 print("Back button clicked")
                 self.destroy()
-                Redirect.goLogin()
+                Redirect.gouserSelection()
                 return
 
         def handleID():
-            pid = self.IDEntry.get()
-            sql = "Select u.firstName, p.TicketID, s.TicketStatus, e.EventName, e.Location, e.Date, e.Time from Participants p join UserInfo u ON u.UserID = p.UserID join Event e ON e.EventID = p.EventID join Tickets t ON t.EventID = e.EventID join TicketStatus s ON t.TicketStatusID = s.TicketStatusID WHERE ParticipantsID = %s;"
+            pid = Login.Login.getUserID()
+            sql = "SELECT p.PurchaseID, u.firstName, t.TicketType, s.TicketStatus, e.EventName, e.Location, e.Date, e.Time FROM Purchase p JOIN UserInfo u ON p.UserID = u.UserID JOIN Tickets t ON p.TicketID = t.TicketID JOIN Event e ON e.EventID = p.EventID JOIN TicketStatus s ON t.TicketStatusID = s.TicketStatusID WHERE p.UserID = %s;"
             value = (pid,)
             cursor.execute(sql, value)
-            self.IDEntry.delete(0, END)
             return cursor.fetchall()
 
         Toplevel.__init__(self, *args, **kwargs)
@@ -148,24 +124,6 @@ class userView(Toplevel):
             image=image_image_1
         )
 
-        button_image_1 = PhotoImage(
-            file=relative_to_assets("button_1.png"))
-        self.button_1 = Button(
-            self.canvas,
-            image=button_image_1,
-            borderwidth=0,
-            highlightthickness=0,
-            command=lambda: handle_button_press("Tickets", self),
-            relief="sunken",
-            bg = '#FF7A00',
-            cursor = 'hand2',
-        )
-        self.button_1.place(
-            x=22.0,
-            y=357.0,
-            width=234.0,
-            height=47.0
-        )
 
         button_image_2 = PhotoImage(
             file=relative_to_assets("button_2.png"))
@@ -174,10 +132,12 @@ class userView(Toplevel):
             image=button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: handle_button_press("Participants", self),
+            command=lambda: handle_button_press("Purchase", self),
             relief="sunken",
             bg = '#FF7A00',
             cursor = 'hand2',
+            activebackground='#FF7A00',
+            activeforeground='#FF7A00',
         )
         self.button_2.place(
             x=22.0,
@@ -197,6 +157,8 @@ class userView(Toplevel):
             relief="sunken",
             bg = '#FF7A00',
             cursor = 'hand2',
+            activebackground='#FF7A00',
+            activeforeground='#FF7A00',
         )
         self.button_3.place(
             x=22.0,
@@ -216,6 +178,8 @@ class userView(Toplevel):
             relief="sunken",
             bg = '#FF7A00',
             cursor = 'hand2',
+            activebackground='#FF7A00',
+            activeforeground='#FF7A00',
         )
         self.button_4.place(
             x=22.0,
@@ -224,19 +188,6 @@ class userView(Toplevel):
             height=47.0
         )
 
-        self.canvas.create_text(
-            28.0,
-            434.0,
-            anchor="nw",
-            text="Your ID: ",
-            fill="#000000",
-            font=("Encode Sans SC", 19 * -1)
-        )
-
-        entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
-        entry_bg_1 = self.canvas.create_image(130.5, 478.5, image=entry_image_1)
-        self.IDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.IDEntry.place(x=27.0,y=467.0,width=211.0,height=27.0)
 
         self.resizable(False, False)
         self.mainloop()

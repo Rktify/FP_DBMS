@@ -43,8 +43,6 @@ class Signup(Toplevel):
             self.destroy()
             Redirect.goLogin()
 
-        
-
 
         Toplevel.__init__(self, *args, **kwargs)
         self.title("Evenementiel Login Menu")
@@ -281,5 +279,6 @@ class Signup(Toplevel):
         x = getnextID()
         self.userIDEntry.insert(0, x)
         self.userIDEntry.configure(state='readonly')
+
         self.resizable(False, False)
         self.mainloop()

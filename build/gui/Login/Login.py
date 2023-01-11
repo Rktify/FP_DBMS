@@ -15,24 +15,28 @@ def loginWindow():
     Login()
 
 class Login(Toplevel):
+    def getUserID():
+        return userID
     def __init__(self, *args, **kwargs):
         def getDetails(self):
+            global userID
             print("Login button clicked")
             userID = self.userIDEntry.get()
             userName = self.nameEntry.get()
             password = self.passwordEntry.get()
+            if userID == "0" and userName == "admin" and password == "admin":
+                self.destroy()
+                Redirect.goSelection()
             testEmpty(userID, userName, password)
             user = checkuserName(userID, userName)
             passw = checkPassword(userID, password)
             if user and passw:
                 self.destroy()
-                Redirect.gouserView()
-            elif userName == "admin" and password == "admin":
-                self.destroy()
-                Redirect.goSelection()
+                Redirect.gouserSelection()
             else:
                 messagebox.showwarning("Invalid username or password", "Please enter the correct credentials!\n Or sign up if you haven't!")
             
+        
         def testEmpty(a,b,c):
             if a == "" or b == "" or c == "":
                 messagebox.showinfo("Error", "Please fill in all the fields")
@@ -46,8 +50,10 @@ class Login(Toplevel):
                 Redirect.goSignup()
             elif btn_name == "Forgor":
                 user = self.nameEntry.get()
-                password = forgotPassword(user)
-                messagebox.showinfo("Forgot Password", f"Here is your login credentials: \n\nusername: {user} \npassword: {password}")
+                password, UserID = forgotPassword(user)
+                messagebox.showinfo("Forgot Password", f"Here is your login credentials: \n\nUserID: {UserID} \nusername: {user} \npassword: {password}")
+
+        
 
         Toplevel.__init__(self, *args, **kwargs)
         self.title("Evenementiel Login Menu")
