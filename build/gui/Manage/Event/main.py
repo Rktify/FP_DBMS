@@ -4,6 +4,7 @@ from tkinter import messagebox
 from tkinter.ttk import Treeview
 from ..connector import *
 from .. import Redirect
+import datetime
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame4")
@@ -27,9 +28,10 @@ class Event(Toplevel):
                 location = self.locationEntry.get()
                 eventName = self.nameEntry.get()
                 eventID = self.eventIDEntry.get()
-                testEmpty(time, date, location, eventName, eventID)
+                date2 = formatDate(date)
+                testEmpty(time, date2, location, eventName, eventID)
                 sql = "INSERT INTO Event VALUES(%s, %s, %s, %s, %s);"
-                value = (eventID, eventName, location, date, time)
+                value = (eventID, eventName, location, date2, time)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
@@ -40,9 +42,10 @@ class Event(Toplevel):
                 location = self.locationEntry.get()
                 eventName = self.nameEntry.get()
                 eventID = self.eventIDEntry.get()
-                testEmpty(time, date, location, eventName, eventID)
+                date2 = formatDate(date)
+                testEmpty(time, date2, location, eventName, eventID)
                 sql = "UPDATE Event SET EventID = %s, EventName = %s, Location = %s, Date = %s, Time = %s WHERE EventID = %s"
-                value = (eventID, eventName, location, date, time, eventID)
+                value = (eventID, eventName, location, date2, time, eventID)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
@@ -62,6 +65,16 @@ class Event(Toplevel):
                 return
             else:
                 return
+
+        def formatDate(date):
+            date = str(date)
+            date = date.replace("-", "")
+            year = int(date[0:4])
+            month = int(date[4:6])
+            day = int(date[6:8])
+            print(day)
+            x = datetime.datetime(year, month, day)
+            return x
 
         def refresh():
             display()

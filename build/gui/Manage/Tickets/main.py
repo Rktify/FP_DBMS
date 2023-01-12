@@ -160,7 +160,7 @@ class Tickets(Toplevel):
         self.button_6.place(x=456.0,y=418.0, width=119.0, height=46.0)
 
         entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
-        entry_bg_1 = self.canvas.create_image(711.5,304.5,image=entry_image_1)
+        # entry_bg_1 = self.canvas.create_image(711.5,304.5,image=entry_image_1)
         self.ticketIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
         self.ticketIDEntry.place(x=606.0,y=107.0,width=211.0,height=27.0)
 
@@ -185,7 +185,7 @@ class Tickets(Toplevel):
             text="Type: ",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
-        )
+        )   
 
         entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
         entry_bg_3 = self.canvas.create_image(711.5,213.5,image=entry_image_3)
@@ -201,7 +201,7 @@ class Tickets(Toplevel):
             font=("Encode Sans SC", 19 * -1)
         )
 
-        entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
+        entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png")) 
         entry_bg_4 = self.canvas.create_image(711.5,121.5,image=entry_image_4)
         self.ticketstatusIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
         self.ticketstatusIDEntry.place(x=606.0, y=244.0, width=211.0, height=27.0)

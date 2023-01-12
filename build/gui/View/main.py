@@ -23,7 +23,7 @@ class View(Toplevel):
             elif tableName == "UserInfo":
                 self.event_data = getUserInfo()
             elif tableName == "Purchase":
-                self.event_data = getPurchase()
+                self.event_data = getPurchased()
             elif tableName == "Positions":
                 self.event_data = getPositions()
             elif tableName == "Committees":

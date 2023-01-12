@@ -26,14 +26,24 @@ def getUserInfo():
     return cursor.fetchall()
     
 def getTicketss():
-    cursor.execute("SELECT t.TicketID, e.EventName, t.Price, t.TicketType, s.TicketStatus from Tickets t join Event e ON t.EventID = e.EventID join TicketStatus s ON t.TicketStatusID = s.TicketStatusID;")
-    return cursor.fetchall()
-def getPurchase():
-    cursor.execute("SELECT t.TicketID, t.TicketType, e.EventID, e.EventName, e.Location, e.Date, e.Time FROM Tickets t JOIN Event e ON e.EventID = t.EventID")
+    cursor.execute("SELECT t.TicketID, e.EventName, t.TicketType, s.TicketStatus from Tickets t join Event e ON t.EventID = e.EventID join TicketStatus s ON t.TicketStatusID = s.TicketStatusID;")
     return cursor.fetchall()
 
-def getnextID():
+def getPurchased():
+    cursor.execute("SELECT t.TicketID, t.TicketType, e.EventID, e.EventName, e.Location, e.Date, e.Time FROM Tickets t JOIN Event e ON e.EventID = t.EventID WHERE t.TicketStatusID = 2")
+    return cursor.fetchall()
+
+def getPurchase():
+    cursor.execute("SELECT t.TicketID, t.TicketType, e.EventID, e.EventName, e.Location, e.Date, e.Time FROM Tickets t JOIN Event e ON e.EventID = t.EventID WHERE t.TicketStatusID = 1")
+    return cursor.fetchall()
+
+def getnextuserID():
     cursor.execute("Select UserID from UserInfo")
+    x = [i[0] for i in cursor.fetchall()]
+    return (x[-1] + 1)
+
+def getnextID():
+    cursor.execute("Select TicketID from UserInfo")
     x = [i[0] for i in cursor.fetchall()]
     return (x[-1] + 1)
 
@@ -74,5 +84,8 @@ def checkAvailablity(id):
             return False
         else:
             cursor.execute(f"UPDATE Tickets SET TicketStatusID = 2 WHERE TicketID = {id}")
-            cursor.commit()
+            connect.commit()
             return True
+
+
+

@@ -276,7 +276,7 @@ class Signup(Toplevel):
             height=27.0
         )
 
-        x = getnextID()
+        x = getnextuserID()
         self.userIDEntry.insert(0, x)
         self.userIDEntry.configure(state='readonly')
 
