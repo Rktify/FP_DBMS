@@ -23,26 +23,24 @@ class Tickets(Toplevel):
                 refresh()
             elif btn_name == "Add":
                 status = self.ticketstatusIDEntry.get()
-                price = self.priceEntry.get()
                 type = self.typeEntry.get()
                 eventID = self.eventIDEntry.get()
                 ticketID = self.ticketIDEntry.get()
-                testEmpty(status, price, type, eventID, ticketID)
-                sql = "INSERT INTO Tickets VALUES(%s, %s, %s, %s, %s);"
-                value = (ticketID, eventID, type, price, status)
+                testEmpty(status, type, eventID, ticketID)
+                sql = "INSERT INTO Tickets VALUES(%s, %s, %s, %s);"
+                value = (ticketID, eventID, type, status)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
                 print("Added into Database")
             elif btn_name == "Edit":
                 status = self.ticketstatusIDEntry.get()
-                price = self.priceEntry.get()
                 type = self.typeEntry.get()
                 eventID = self.eventIDEntry.get()
                 ticketID = self.ticketIDEntry.get()
-                testEmpty(status, price, type, eventID, ticketID)
-                sql = "UPDATE Tickets SET TicketID = %s, EventID = %s, TicketType = %s, Price = %s, TicketStatusID = %s WHERE TicketID = %s"
-                value = (ticketID, eventID, type, price, status, ticketID)
+                testEmpty(status, type, eventID, ticketID)
+                sql = "UPDATE Tickets SET TicketID = %s, EventID = %s, TicketType = %s, TicketStatusID = %s WHERE TicketID = %s"
+                value = (ticketID, eventID, type, status, ticketID)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
@@ -56,8 +54,8 @@ class Tickets(Toplevel):
                 self.destroy()
                 Redirect.goCommittees()
 
-        def testEmpty(a,b,c,d,e):
-            if a == "" or b == "" or c == "" or d == "" or e == "":
+        def testEmpty(a,b,c,d):
+            if a == "" or b == "" or c == "" or d == "" :
                 messagebox.showinfo("Error", "Please fill in all the fields")
                 return
             else:
@@ -69,9 +67,8 @@ class Tickets(Toplevel):
 
         def clearRecord():
             self.ticketIDEntry.configure(state='normal')
-            self.typeEntry.delete(0, END)
             self.ticketstatusIDEntry.delete(0, END)
-            self.priceEntry.delete(0, END)
+            self.typeEntry.delete(0, END)
             self.eventIDEntry.delete(0, END)
             self.ticketIDEntry.delete(0, END)
 
@@ -82,8 +79,7 @@ class Tickets(Toplevel):
             selected = treeview.focus()
             values = treeview.item(selected, 'values')
 
-            self.ticketstatusIDEntry.insert(0, values[4])
-            self.priceEntry.insert(0, values[3])
+            self.ticketstatusIDEntry.insert(0, values[3])
             self.typeEntry.insert(0, values[2])
             self.eventIDEntry.insert(0, values[1])
             self.ticketIDEntry.insert(0, values[0])
@@ -109,7 +105,7 @@ class Tickets(Toplevel):
         self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x = 0, y = 0)
 
-        columns = {"Ticket ID": ["Ticket ID", 50],"Event ID": ["Event ID", 100],"Type": ["Type", 100],"Price": ["Price", 100],"TicketStatusID": ["TicketStatusID", 46]}
+        columns = {"Ticket ID": ["Ticket ID", 100],"Event ID": ["Event ID", 100],"Type": ["Type", 100],"TicketStatusID": ["TicketStatusID", 96]}
 
         treeview = Treeview(
             self.canvas,
@@ -170,7 +166,7 @@ class Tickets(Toplevel):
 
         self.canvas.create_text(
             460.0,
-            293.0,
+            247.0,
             anchor="nw",
             text="TicketStatusID: ",
             fill="#000000",
@@ -183,9 +179,10 @@ class Tickets(Toplevel):
         self.eventIDEntry.place(x=607.0,y=153.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
-            460.0, 247.0,
+            460.0,
+            201.0,
             anchor="nw",
-            text="Price: ",
+            text="Type: ",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )
@@ -197,21 +194,6 @@ class Tickets(Toplevel):
 
         self.canvas.create_text(
             460.0,
-            201.0,
-            anchor="nw",
-            text="Type: ",
-            fill="#000000",
-            font=("Encode Sans SC", 19 * -1)
-        )
-
-        entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
-        entry_bg_4 = self.canvas.create_image(712.5,167.5,image=entry_image_4)
-        self.priceEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.priceEntry.place( x=606.0, y=244.0, width=211.0, height=27.0)
-        
-
-        self.canvas.create_text(
-            460.0,
             155.0,
             anchor="nw",
             text="Event ID:",
@@ -219,10 +201,10 @@ class Tickets(Toplevel):
             font=("Encode Sans SC", 19 * -1)
         )
 
-        entry_image_5 = PhotoImage(file=relative_to_assets("entry_5.png"))
-        entry_bg_5 = self.canvas.create_image(711.5,121.5,image=entry_image_5)
+        entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
+        entry_bg_4 = self.canvas.create_image(711.5,121.5,image=entry_image_4)
         self.ticketstatusIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.ticketstatusIDEntry.place(x=606.0,y=290.0,width=211.0,height=27.0)
+        self.ticketstatusIDEntry.place(x=606.0, y=244.0, width=211.0, height=27.0)
         
 
         self.canvas.create_text(

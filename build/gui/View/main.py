@@ -20,7 +20,7 @@ class View(Toplevel):
             self.treeview.delete(*self.treeview.get_children())
             if tableName == "Events":
                 self.event_data = getEvents()
-            elif tableName == "User Info":
+            elif tableName == "UserInfo":
                 self.event_data = getUserInfo()
             elif tableName == "Purchase":
                 self.event_data = getPurchase()
@@ -135,9 +135,8 @@ class View(Toplevel):
             elif btn_name == "Tickets":
                 print("Tickets pressed")
                 self.columns = {
-                    "Ticket ID": ["Ticket ID", 50],
+                    "Ticket ID": ["Ticket ID", 150],
                     "Event ID": ["Event ID", 100],
-                    "Price": ["Price", 100],
                     "Ticket Type": ["Ticket Type", 100],
                     "Status ID": ["Status ID", 96]
                 }
@@ -162,6 +161,29 @@ class View(Toplevel):
                 self.columns = {
                     "Ticket Status ID": ["Ticket Status ID", 250],
                     "Ticket Status": ["Ticket Status", 246]
+                }
+
+                self.treeview = Treeview(
+                    self,
+                    columns=list(self.columns.keys()),
+                    show="headings",
+                    height=200,
+                    selectmode="browse",
+                )
+
+                for idx, txt in self.columns.items():
+                    self.treeview.heading(idx, text=txt[0])
+                    self.treeview.column(idx, width=txt[1])
+
+                self.treeview.place(x=295.0, y=80.0, width=500.0, height=300.0)
+                handle_refresh(self, btn_name)
+
+            elif btn_name == "UserInfo":
+                print("UserInfo pressed")
+                self.columns = {
+                    "User ID": ["User ID", 100],
+                    "First Name": ["First Name", 200],
+                    "Last Name": ["Last Name", 196]
                 }
 
                 self.treeview = Treeview(
@@ -217,12 +239,16 @@ class View(Toplevel):
             image=button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: handle_button_press("User Info", self),
-            relief="flat"
+            command=lambda: handle_button_press("UserInfo", self),
+            relief="sunken",
+            bg = '#FF7A00',           
+            cursor = 'hand2',
+            activebackground='#FF7A00',
+            activeforeground='#FF7A00'
         )
         self.button_1.place(
             x=22.0,
-            y=49.0,
+            y=143.0,
             width=234.0,
             height=47.0
         )
@@ -273,7 +299,7 @@ class View(Toplevel):
             file=relative_to_assets("button_4.png"))
         self.button_4 = Button(
             self.canvas,
-            image=button_image_3,
+            image=button_image_4,
             borderwidth=0,
             highlightthickness=0,
             command=lambda: handle_button_press("Positions", self),
@@ -336,7 +362,7 @@ class View(Toplevel):
             file=relative_to_assets("button_7.png"))
         self.button_7 = Button(
             self.canvas,
-            image=button_image_6,
+            image=button_image_7,
             borderwidth=0,
             highlightthickness=0,
             command=lambda: handle_button_press("Events", self),
@@ -369,7 +395,7 @@ class View(Toplevel):
         )
         self.button_8.place(
             x=22.0,
-            y=143.0,
+            y=49.0,
             width=234.0,
             height=47.0
         )
