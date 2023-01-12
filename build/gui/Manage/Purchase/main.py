@@ -13,10 +13,10 @@ ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame2")
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
-def participantsWindow():
-    Participants()
+def purchaseWindow():
+    Purchase()
 
-class Participants(Toplevel):
+class Purchase(Toplevel):
     def __init__(self, *args, **kwargs):
         def handle_button_press(btn_name, self):
             if btn_name == "Refresh":
@@ -28,7 +28,7 @@ class Participants(Toplevel):
                 ticketID = self.ticketIDEntry.get()
                 eventID = self.eventIDEntry.get()
                 testEmpty(participantsID, userID, ticketID, eventID)
-                sql = "INSERT INTO Participants VALUES(%s, %s, %s, %s);"
+                sql = "INSERT INTO Purchase VALUES(%s, %s, %s, %s);"
                 value = (participantsID, userID, ticketID, eventID)
                 cursor.execute(sql, value)
                 connect.commit()
@@ -40,7 +40,7 @@ class Participants(Toplevel):
                 ticketID = self.ticketIDEntry.get()
                 eventID = self.eventIDEntry.get()
                 testEmpty(participantsID, userID, ticketID, eventID)
-                sql = "UPDATE Participants SET ParticipantsID = %s, UserID = %s, TicketID = %s, EventID = %s WHERE ParticipantsID = %s"
+                sql = "UPDATE Purchase SET PurchaseID = %s, UserID = %s, TicketID = %s, EventID = %s WHERE ParticipantsID = %s"
                 value = (participantsID, userID , ticketID, eventID, participantsID)
                 cursor.execute(sql, value)
                 connect.commit()
@@ -50,7 +50,7 @@ class Participants(Toplevel):
                 removeRecord()
             elif btn_name == "Continue":
                 self.destroy()
-                Redirect.goSelection()
+                Redirect.goUserInfo()
             elif btn_name == "Back":
                 self.destroy()
                 Redirect.goTicketStatus()
@@ -90,7 +90,7 @@ class Participants(Toplevel):
         def removeRecord():
             selected = treeview.focus()
             eid = treeview.item(selected, 'values')[0]
-            sql = "DELETE FROM Participants WHERE ParticipantsID=%s"
+            sql = "DELETE FROM Purchase WHERE PurchaseID=%s"
             value = (eid,)
             cursor.execute(sql, value)
             connect.commit()
@@ -100,11 +100,11 @@ class Participants(Toplevel):
 
 
         Toplevel.__init__(self, *args, **kwargs)
-        self.title("Evenementiel Managing Participants")
+        self.title("Evenementiel Managing Purchases")
         self.geometry("853x556")
         self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x = 0, y = 0)
-        columns = {"Participants ID": ["Participants ID", 100],"User ID": ["User ID", 100],"Ticket ID": ["Ticket ID", 100], "Event ID": ["Event ID", 96]}
+        columns = {"Purchase ID": ["Purchase ID", 100],"User ID": ["User ID", 100],"Ticket ID": ["Ticket ID", 100], "Event ID": ["Event ID", 96]}
 
         treeview = Treeview(
             self.canvas,
@@ -121,7 +121,7 @@ class Participants(Toplevel):
 
             treeview.place(x=20.0, y=62.0, width=400.0, height=358.0)
             treeview.delete(*treeview.get_children())
-            event_data = getParticipants()
+            event_data = getPurchase()
             for row in event_data:
                 treeview.insert("", "end", values=row)
 
@@ -210,7 +210,7 @@ class Participants(Toplevel):
             460.0,
             155.0,
             anchor="nw",
-            text="ParticipantsID:",
+            text="Purchase ID:",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )
@@ -219,7 +219,7 @@ class Participants(Toplevel):
             484.0,
             17.0,
             anchor="nw",
-            text="Participants Table",
+            text="Purchase Table",
             fill="#000000",
             font=("Encode Sans SC", 37 * -1)
         )

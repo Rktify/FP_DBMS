@@ -13,31 +13,22 @@ ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame0")
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
-def ticketstatusWindow():
-    TicketStatus()
+def userWindow():
+    User()
 
-class TicketStatus(Toplevel):
+class User(Toplevel):
     def __init__(self, *args, **kwargs):
         def handle_button_press(btn_name, self):
             if btn_name == "Refresh":
                 print("Refreshed")
                 refresh()
-            elif btn_name == "Add":
-                ticketstatsID = self.ticketstatusIDEntry.get()
-                name = self.ticketStatsEntry.get()
-                testEmpty(ticketstatsID, name)
-                sql = "INSERT INTO TicketStatus VALUES(%s, %s);"
-                value = (ticketstatsID, name)
-                cursor.execute(sql, value)
-                connect.commit()
-                refresh()
-                print("Added into Database")
             elif btn_name == "Edit":
-                ticketstatsID = self.ticketstatusIDEntry.get()
-                name = self.ticketStatsEntry.get()
-                testEmpty(ticketstatsID, name)
-                sql = "UPDATE TicketStatus SET TicketStatusID = %s, TicketStatus = %s WHERE TicketStatusID = %s"
-                value = (ticketstatsID, name, ticketstatsID)
+                id = self.userIDEntry.get()
+                firstname = self.firstEntry.get()
+                lastname = self.lastEntry.get()
+                testEmpty(id, firstname, lastname)
+                sql = "UPDATE UserInfo SET UserID = %s, firstName = %s, lastName = %s WHERE UserID = %s"
+                value = (id, firstname, lastname, id)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
@@ -46,13 +37,13 @@ class TicketStatus(Toplevel):
                 removeRecord()
             elif btn_name == "Continue":
                 self.destroy()
-                Redirect.goPurchase()
+                Redirect.goSelection()
             elif btn_name == "Back":
                 self.destroy()
-                Redirect.goTickets()
+                Redirect.goPurchase()
 
-        def testEmpty(a,b):
-            if a == "" or b == "":
+        def testEmpty(a,b,c):
+            if a == "" or b == "" or c == "":
                 messagebox.showinfo("Error", "Please fill in all the fields")
                 return
             else:
@@ -63,9 +54,9 @@ class TicketStatus(Toplevel):
             clearRecord()
 
         def clearRecord():
-            self.ticketstatusIDEntry.configure(state='normal')
-            self.ticketstatusIDEntry.delete(0, END)
-            self.ticketStatsEntry.delete(0, END)
+            self.lastEntry.delete(0, END)
+            self.firstEntry.delete(0, END)
+            self.userIDEntry.delete(0, END)
 
         def selectRecord(e):
             clearRecord()
@@ -73,16 +64,17 @@ class TicketStatus(Toplevel):
             selected = treeview.focus()
             values = treeview.item(selected, 'values')
 
-            self.ticketStatsEntry.insert(0, values[1])
-            self.ticketstatusIDEntry.insert(0, values[0])
-            self.ticketstatusIDEntry.configure(state='readonly')
+            self.lastEntry.insert(0, values[2])
+            self.firstEntry.insert(0, values[1])
+            self.userIDEntry.insert(0, values[0])
+            self.userIDEntry.configure(state='readonly')
 
             print("Selected")
 
         def removeRecord():
             selected = treeview.focus()
             eid = treeview.item(selected, 'values')[0]
-            sql = "DELETE FROM TicketStatus WHERE TicketStatusID=%s"
+            sql = "DELETE FROM UserInfo WHERE UserID=%s"
             value = (eid,)
             cursor.execute(sql, value)
             connect.commit()
@@ -91,11 +83,13 @@ class TicketStatus(Toplevel):
             print("Removed from Database")
 
         Toplevel.__init__(self, *args, **kwargs)
-        self.title("Evenementiel Managing Ticket Status")
+        self.title("Evenementiel Managing User Info")
         self.geometry("853x556")
+
         self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x = 0, y = 0)
-        columns = {"Ticket Status ID": ["Ticket Status ID", 200],"Ticket Staus": ["Ticket Status", 196]}
+
+        columns = {"User ID": ["User ID", 50],"First Name": ["First Name", 175],"Last Name": ["Last Name", 170]}
 
         treeview = Treeview(
             self.canvas,
@@ -112,7 +106,7 @@ class TicketStatus(Toplevel):
 
             treeview.place(x=20.0, y=62.0, width=400.0, height=358.0)
             treeview.delete(*treeview.get_children())
-            event_data = getTicketStatus()
+            event_data = getUserInfo()
             for row in event_data:
                 treeview.insert("", "end", values=row)
 
@@ -125,17 +119,22 @@ class TicketStatus(Toplevel):
 
         self.canvas.create_rectangle(43.0,0.0,896.0,80.0,fill="#FF7A00",outline="")
 
+        self.canvas.create_text(
+            507.0,
+            17.0,
+            anchor="nw",
+            text="UserInfo Table",
+            fill="#000000",
+            font=("Encode Sans SC", 37 * -1)
+        )
+
         button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
         self.button_1 = Button(self.canvas,image=button_image_1, borderwidth=0, highlightthickness=0, command=lambda: handle_button_press("Edit", self), relief="sunken", cursor="hand2")
-        self.button_1.place( x=722.0, y=356.0, width=119.0, height=46.0)
-
-        button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
-        self.button_2 = Button(self.canvas, image=button_image_2, borderwidth=0, highlightthickness=0, command=lambda: handle_button_press("Add", self), relief="sunken", cursor="hand2")
-        self.button_2.place( x=589.0, y=356.0, width=119.0, height=46.0)
+        self.button_1.place( x=662.0, y=356.0, width=119.0, height=46.0)
 
         button_image_3 = PhotoImage(file=relative_to_assets("button_3.png"))
         self.button_3 = Button(self.canvas,image=button_image_3,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Delete", self),relief="sunken", cursor="hand2")
-        self.button_3.place(x=456.0,y=356.0, width=119.0, height=46.0)
+        self.button_3.place(x=515.0,y=356.0, width=119.0, height=46.0)
 
         button_image_4 = PhotoImage(file=relative_to_assets("button_4.png"))
         self.button_4 = Button(self.canvas,image=button_image_4,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Continue", self),relief="sunken", cursor="hand2")
@@ -149,13 +148,94 @@ class TicketStatus(Toplevel):
         self.button_6 = Button(self.canvas,image=button_image_6,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Back", self),relief="sunken", cursor="hand2")
         self.button_6.place(x=456.0,y=418.0, width=119.0, height=46.0)
 
+        entry_image_1 = PhotoImage(
+            file=relative_to_assets("entry_1.png"))
+        entry_bg_1 = self.canvas.create_image(
+            724.5,
+            174.5,
+            image=entry_image_1
+        )
+        self.userIDEntry = Entry(
+            self.canvas,
+            bd=0,
+            bg="#D9D9D9",
+            fg="#000716",
+            highlightthickness=0
+        )
+        self.userIDEntry.place(
+            x=619.0,
+            y=160.0,
+            width=211.0,
+            height=27.0
+        )
+
         self.canvas.create_text(
-            484.0,
-            17.0,
+            468.0,
+            162.0,
             anchor="nw",
-            text="Ticket Status Table",
+            text="UserID:",
             fill="#000000",
-            font=("Encode Sans SC", 37 * -1)
+            font=("Encode Sans SC", 19 * -1)
+        )
+
+        entry_image_2 = PhotoImage(
+            file=relative_to_assets("entry_2.png"))
+        entry_bg_2 = self.canvas.create_image(
+            724.5,
+            219.5,
+            image=entry_image_2
+        )
+        self.firstEntry = Entry(
+            self.canvas,
+            bd=0,
+            bg="#D9D9D9",
+            fg="#000716",
+            highlightthickness=0
+        )
+        self.firstEntry.place(
+            x=619.0,
+            y=205.0,
+            width=211.0,
+            height=27.0
+        )
+
+        self.canvas.create_text(
+            468.0,
+            205.0,
+            anchor="nw",
+            text="First Name:",
+            fill="#000000",
+            font=("Encode Sans SC", 19 * -1)
+        )
+
+        entry_image_3 = PhotoImage(
+            file=relative_to_assets("entry_3.png"))
+        entry_bg_3 = self.canvas.create_image(
+            724.5,
+            264.5,
+            image=entry_image_3
+        )
+        self.lastEntry = Entry(
+            self.canvas,
+            bd=0,
+            bg="#D9D9D9",
+            fg="#000716",
+            highlightthickness=0
+        )
+        self.lastEntry.place(
+            x=619.0,
+            y=250.0,
+            width=211.0,
+            height=27.0
+        )
+
+        self.canvas.create_text(
+            468.0,
+            252.0,
+            anchor="nw",
+            text="Last Name:",
+            fill="#000000",
+            font=("Encode Sans SC", 19 * -1)
         )
 
         self.canvas.create_rectangle(
@@ -173,34 +253,6 @@ class TicketStatus(Toplevel):
             420.0,
             fill="#FFFFFF",
             outline="")
-
-        entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
-        entry_bg_1 = self.canvas.create_image(718.5,218.5,image=entry_image_1)
-        self.ticketstatusIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.ticketstatusIDEntry.place( x=613.0,y=158.0, width=211.0, height=27.0)
-        
-        self.canvas.create_text(
-            460.0,
-            204.0,
-            anchor="nw",
-            text="Ticket Status:",
-            fill="#000000",
-            font=("Encode Sans SC", 19 * -1)
-        )
-
-        entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
-        entry_bg_2 = self.canvas.create_image(718.5,172.5,image=entry_image_2)
-        self.ticketStatsEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.ticketStatsEntry.place(x=613.0,y=204.0,width=211.0,height=27.0)
-
-        self.canvas.create_text(
-            460.0,
-            160.0,
-            anchor="nw",
-            text="TicketStatusID:",
-            fill="#000000",
-            font=("Encode Sans SC", 19 * -1)
-        )
-
+    
         self.resizable(False, False)
         self.mainloop()

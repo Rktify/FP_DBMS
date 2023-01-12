@@ -20,8 +20,10 @@ class View(Toplevel):
             self.treeview.delete(*self.treeview.get_children())
             if tableName == "Events":
                 self.event_data = getEvents()
-            elif tableName == "Participants":
-                self.event_data = getParticipants()
+            elif tableName == "User Info":
+                self.event_data = getUserInfo()
+            elif tableName == "Purchase":
+                self.event_data = getPurchase()
             elif tableName == "Positions":
                 self.event_data = getPositions()
             elif tableName == "Committees":
@@ -82,10 +84,10 @@ class View(Toplevel):
                 self.treeview.place(x=295.0, y=80.0, width=500.0, height=300.0)
                 handle_refresh(self, "Committees")
 
-            elif btn_name == "Participants":
-                print("Participants pressed")
+            elif btn_name == "Purchase":
+                print("Purchase pressed")
                 self.columns = {
-                    "Participants ID": ["Participants ID", 100],
+                    "Purchase ID": ["Purchase ID", 100],
                     "UserID": ["UserID", 200],
                     "Ticket ID": ["Ticket ID", 100],
                     "Event ID": ["Event ID", 96]
@@ -208,14 +210,6 @@ class View(Toplevel):
             fill="#FF7A00",
             outline="")
 
-        image_image_1 = PhotoImage(
-            file=relative_to_assets("image_1.png"))
-        self.image_1 = self.canvas.create_image(
-            545.0,
-            278.0,
-            image=image_image_1
-        )
-
         button_image_1 = PhotoImage(
             file=relative_to_assets("button_1.png"))
         self.button_1 = Button(
@@ -223,16 +217,12 @@ class View(Toplevel):
             image=button_image_1,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: handle_button_press("TicketStats", self),
-            relief="sunken",
-            bg = '#FF7A00',
-            cursor = 'hand2',
-            activebackground='#FF7A00',
-            activeforeground='#FF7A00'
+            command=lambda: handle_button_press("User Info", self),
+            relief="flat"
         )
         self.button_1.place(
             x=22.0,
-            y=441.0,
+            y=49.0,
             width=234.0,
             height=47.0
         )
@@ -244,7 +234,7 @@ class View(Toplevel):
             image=button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: handle_button_press("Tickets", self),
+            command=lambda: handle_button_press("TicketStats", self),
             relief="sunken",
             bg = '#FF7A00',
             cursor = 'hand2',
@@ -253,7 +243,7 @@ class View(Toplevel):
         )
         self.button_2.place(
             x=22.0,
-            y=390.0,
+            y=461.0,
             width=234.0,
             height=47.0
         )
@@ -265,7 +255,7 @@ class View(Toplevel):
             image=button_image_3,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: handle_button_press("Positions", self),
+            command=lambda: handle_button_press("Tickets", self),
             relief="sunken",
             bg = '#FF7A00',
             cursor = 'hand2',
@@ -274,7 +264,7 @@ class View(Toplevel):
         )
         self.button_3.place(
             x=22.0,
-            y=331.0,
+            y=408.0,
             width=234.0,
             height=47.0
         )
@@ -283,10 +273,10 @@ class View(Toplevel):
             file=relative_to_assets("button_4.png"))
         self.button_4 = Button(
             self.canvas,
-            image=button_image_4,
+            image=button_image_3,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: handle_button_press("Participants", self),
+            command=lambda: handle_button_press("Positions", self),
             relief="sunken",
             bg = '#FF7A00',
             cursor = 'hand2',
@@ -295,7 +285,7 @@ class View(Toplevel):
         )
         self.button_4.place(
             x=22.0,
-            y=278.0,
+            y=355.0,
             width=234.0,
             height=47.0
         )
@@ -307,7 +297,7 @@ class View(Toplevel):
             image=button_image_5,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: handle_button_press("Committees", self),
+            command=lambda: handle_button_press("Purchase", self),
             relief="sunken",
             bg = '#FF7A00',
             cursor = 'hand2',
@@ -316,7 +306,7 @@ class View(Toplevel):
         )
         self.button_5.place(
             x=22.0,
-            y=223.0,
+            y=302.0,
             width=234.0,
             height=47.0
         )
@@ -328,7 +318,7 @@ class View(Toplevel):
             image=button_image_6,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: handle_button_press("Events", self),
+            command=lambda: handle_button_press("Committees", self),
             relief="sunken",
             bg = '#FF7A00',
             cursor = 'hand2',
@@ -337,7 +327,7 @@ class View(Toplevel):
         )
         self.button_6.place(
             x=22.0,
-            y=168.0,
+            y=249.0,
             width=234.0,
             height=47.0
         )
@@ -346,7 +336,28 @@ class View(Toplevel):
             file=relative_to_assets("button_7.png"))
         self.button_7 = Button(
             self.canvas,
-            image=button_image_7,
+            image=button_image_6,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: handle_button_press("Events", self),
+            relief="sunken",
+            bg = '#FF7A00',
+            cursor = 'hand2',
+            activebackground='#FF7A00',
+            activeforeground='#FF7A00'
+        )
+        self.button_7.place(
+            x=22.0,
+            y=196.0,
+            width=234.0,
+            height=47.0
+        )
+
+        button_image_8 = PhotoImage(
+            file=relative_to_assets("button_8.png"))
+        self.button_8 = Button(
+            self.canvas,
+            image=button_image_8,
             borderwidth=0,
             highlightthickness=0,
             command=lambda: handle_button_press("Home", self),
@@ -356,14 +367,13 @@ class View(Toplevel):
             activebackground='#FF7A00',
             activeforeground='#FF7A00'
         )
-        self.button_7.place(
+        self.button_8.place(
             x=22.0,
-            y=49.0,
+            y=143.0,
             width=234.0,
             height=47.0
         )
 
+
         self.resizable(False, False)
         self.mainloop()
-
-

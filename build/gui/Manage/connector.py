@@ -13,8 +13,8 @@ def getCommittees():
 def getPositions():
     cursor.execute("Select * from JobPosition")
     return cursor.fetchall()
-def getParticipants():
-    cursor.execute("Select * from Participants")
+def getPurchase():
+    cursor.execute("Select * from Purchase")
     return cursor.fetchall()
 def getTickets():
     cursor.execute("Select * from Tickets")
@@ -22,6 +22,6 @@ def getTickets():
 def getTicketStatus():
     cursor.execute("Select * from TicketStatus")
     return cursor.fetchall()
-
-def addEvent():
-    pass
+def getUserInfo():
+    cursor.execute("Select UserID, firstName, lastName from UserInfo")
+    return cursor.fetchall()

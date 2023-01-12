@@ -1,9 +1,10 @@
 import gui.Manage.Committees.main
 import gui.Manage.Event.main
-import gui.Manage.Participants.main
+import gui.Manage.Purchase.main
 import gui.Manage.Position.main
 import gui.Manage.Tickets.main
 import gui.Manage.TicketStatus.main
+import gui.Manage.UserInfo.main
 from .. import Redirect
 
 def goEvent():
@@ -12,9 +13,9 @@ def goEvent():
 def goCommittees():
     print("Committees Table")
     gui.Manage.Committees.main.committeesWindow()
-def goParticipants():
-    print("Participants Table")
-    gui.Manage.Participants.main.participantsWindow()
+def goPurchase():
+    print("Purchase Table")
+    gui.Manage.Purchase.main.purchaseWindow()
 def goPosition():
     print("Position Table")
     gui.Manage.Position.main.positionWindow()
@@ -24,6 +25,9 @@ def goTickets():
 def goTicketStatus():
     print("Tickets Status Table")
     gui.Manage.TicketStatus.main.ticketstatusWindow()
+def goUserInfo():
+    print("User Info Table")
+    gui.Manage.UserInfo.main.userWindow()
 def goSelection():
     print("Back to Selection")
     Redirect.goSelection()

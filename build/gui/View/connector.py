@@ -21,6 +21,10 @@ def getTickets():
 def getTicketStats():
     cursor.execute("Select * from TicketStatus")
     return cursor.fetchall()
+def getUserInfo():
+    cursor.execute("Select UserID, firstName, lastName from UserInfo")
+    return cursor.fetchall()
+    
 def getTicketss():
     cursor.execute("SELECT t.TicketID, e.EventName, t.Price, t.TicketType, s.TicketStatus from Tickets t join Event e ON t.EventID = e.EventID join TicketStatus s ON t.TicketStatusID = s.TicketStatusID;")
     return cursor.fetchall()
