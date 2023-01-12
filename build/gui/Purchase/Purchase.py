@@ -24,11 +24,15 @@ class Purchase(Toplevel):
                 userID = Login.Login.getUserID()
                 eventID = self.eventIDEntry.get()
                 ticketID = self.ticketIDEntry.get()
-                sql = "INSERT INTO Purchase VALUES(%s, %s, %s, %s)"
-                values = (PurchaseID, userID, ticketID, eventID)
-                cursor.execute(sql, values)
-                connect.commit()
-                messagebox.showinfo("Successful!", "You have successfully ordered a ticket!")
+                x = checkAvailablity(ticketID)
+                if x:
+                    sql = "INSERT INTO Purchase VALUES(%s, %s, %s, %s)"
+                    values = (PurchaseID, userID, ticketID, eventID)
+                    cursor.execute(sql, values)
+                    connect.commit()
+                    messagebox.showinfo("Successful!", "You have successfully ordered a ticket!")
+                elif not x:
+                    messagebox.showwarning("Availability Error", "Ticket you are trying to purchase is not available")
             elif btn_name == "Back":
                 self.destroy()
                 Redirect.gouserSelection()

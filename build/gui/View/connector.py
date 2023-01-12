@@ -60,3 +60,15 @@ def forgotPassword(user):
     x = [i[0] for i in y]
     z = [i[1] for i in y]
     return x[0], z[0]
+
+def checkAvailablity(id):
+    cursor.execute(f"Select TicketID from Purchase")
+    y = cursor.fetchall()
+    x = [i[0] for i in y]
+    for i in range(len(x)):
+        if id == x[i]:
+            return False
+        else:
+            cursor.execute(f"UPDATE Tickets SET TicketStatusID = 2 WHERE TicketID = {id}")
+            cursor.commit()
+            return True
