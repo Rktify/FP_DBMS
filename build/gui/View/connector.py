@@ -87,5 +87,14 @@ def checkAvailablity(id):
             connect.commit()
             return True
 
+def checkuserAvailability(user):
+    cursor.execute(f"Select userName from UserInfo")
+    y = cursor.fetchall()
+    x = [i[0] for i in y]
+    for i in range(len(x)):
+        if user == x[i]:
+            return (False)
+        else:
+            return (True)
 
 

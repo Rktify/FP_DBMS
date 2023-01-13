@@ -23,14 +23,19 @@ class Signup(Toplevel):
             lastName = self.lastEntry.get()
             userName = self.userEntry.get()
             password = self.passwordEntry.get()
-            testEmpty(userID, firstName, lastName, userName, password)
-            sql = "INSERT INTO UserInfo VALUES(%s, %s, %s, %s, %s)"
-            value = (userID, firstName, lastName, userName, password)
-            cursor.execute(sql, value)
-            connect.commit()
-            messagebox.showinfo("Successful!", "You have successfully signed up, please log in")
-            self.destroy()
-            Redirect.goLogin()
+            x = checkuserAvailability(userName)
+            if x:
+                testEmpty(userID, firstName, lastName, userName, password)
+                sql = "INSERT INTO UserInfo VALUES(%s, %s, %s, %s, %s)"
+                value = (userID, firstName, lastName, userName, password)
+                cursor.execute(sql, value)
+                connect.commit()
+                messagebox.showinfo("Successful!", "You have successfully signed up, please log in")
+                self.destroy()
+                Redirect.goLogin()
+            else:
+                messagebox.showwarning("Invalid Username!", "This username is already taken, please try againa!")
+            
 
         def testEmpty(a,b,c,d,e):
             if a == "" or b == "" or c == "" or d == "" or e == "":
