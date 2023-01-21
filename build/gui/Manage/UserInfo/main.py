@@ -89,7 +89,7 @@ class User(Toplevel):
         self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x = 0, y = 0)
 
-        columns = {"User ID": ["User ID", 50],"First Name": ["First Name", 175],"Last Name": ["Last Name", 170]}
+        columns = {"User ID": ["User ID", 20],"First Name": ["First Name", 150],"Last Name": ["Last Name", 150], "Username": ["Username", 75]}
 
         treeview = Treeview(
             self.canvas,

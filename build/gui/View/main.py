@@ -181,9 +181,10 @@ class View(Toplevel):
             elif btn_name == "UserInfo":
                 print("UserInfo pressed")
                 self.columns = {
-                    "User ID": ["User ID", 100],
-                    "First Name": ["First Name", 200],
-                    "Last Name": ["Last Name", 196]
+                    "User ID": ["User ID", 60],
+                    "First Name": ["First Name", 190],
+                    "Last Name": ["Last Name", 176],
+                    "Username": ["Username", 70]
                 }
 
                 self.treeview = Treeview(

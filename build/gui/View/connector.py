@@ -22,7 +22,7 @@ def getTicketStats():
     cursor.execute("Select * from TicketStatus")
     return cursor.fetchall()
 def getUserInfo():
-    cursor.execute("Select UserID, firstName, lastName from UserInfo")
+    cursor.execute("Select UserID, firstName, lastName, Username from UserInfo")
     return cursor.fetchall()
     
 def getTicketss():
@@ -52,21 +52,22 @@ def getnextpurchaseID():
     x = [i[0] for i in cursor.fetchall()]
     return (x[-1] + 1)
 
-def checkuserName(id, user):
-    cursor.execute(f"Select userName from UserInfo WHERE UserID = {id}")
-    x = [i[0] for i in cursor.fetchall()]
-    if user == x[0]:
-        return True
-    else:
-        return False
 
-def checkPassword(id, passw):
-    cursor.execute(f"Select password from UserInfo WHERE UserID = {id}")
+def checkCredentials(user, passw):
+    cursor.execute(f"Select userName from UserInfo")
     x = [i[0] for i in cursor.fetchall()]
-    if passw == x[0]:
-        return True
-    else:
-        return False
+    for i in range(len(x)-1):
+        if user == x[i]:
+            cursor.execute(f"Select UserID from UserInfo")
+            id = [i[0] for i in cursor.fetchall()]
+            cursor.execute(f"Select distinct password from UserInfo where UserID= {id[i]}")
+            x = [i[0] for i in cursor.fetchall()]
+            if passw == x[0]:
+                return True
+            else:
+                return False
+
+    return False
 
 def forgotPassword(user):
     cursor.execute(f"Select Password, UserID from UserInfo WHERE userName = '{user}'")

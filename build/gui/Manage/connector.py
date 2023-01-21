@@ -23,5 +23,5 @@ def getTicketStatus():
     cursor.execute("Select * from TicketStatus")
     return cursor.fetchall()
 def getUserInfo():
-    cursor.execute("Select UserID, firstName, lastName from UserInfo")
+    cursor.execute("Select UserID, firstName, lastName, Username from UserInfo")
     return cursor.fetchall()

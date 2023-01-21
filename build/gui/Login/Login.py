@@ -15,30 +15,25 @@ def loginWindow():
     Login()
 
 class Login(Toplevel):
-    def getUserID():
-        return userID
     def __init__(self, *args, **kwargs):
         def getDetails(self):
-            global userID
             print("Login button clicked")
-            userID = self.userIDEntry.get()
             userName = self.nameEntry.get()
             password = self.passwordEntry.get()
-            if userID == "0" and userName == "admin" and password == "admin":
+            if userName == "admin" and password == "admin":
                 self.destroy()
                 Redirect.goSelection()
-            testEmpty(userID, userName, password)
-            user = checkuserName(userID, userName)
-            passw = checkPassword(userID, password)
-            if user and passw:
+            testEmpty(userName, password)
+            checking = checkCredentials(userName, password)
+            if checking:
                 self.destroy()
                 Redirect.gouserSelection()
             else:
                 messagebox.showwarning("Invalid username or password", "Please enter the correct credentials!\n Or sign up if you haven't!")
             
         
-        def testEmpty(a,b,c):
-            if a == "" or b == "" or c == "":
+        def testEmpty(a,b):
+            if a == "" or b == "":
                 messagebox.showinfo("Error", "Please fill in all the fields")
                 return
             else:
@@ -131,7 +126,7 @@ class Login(Toplevel):
             image=button_image_3,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: handle_button_press("Forgor", self),
+            command=lambda: handle_button_press("Forgot", self),
             relief="flat"
         )
         self.button_3.place(
@@ -201,35 +196,35 @@ class Login(Toplevel):
             height=27.0
         )
     
-        self.canvas.create_text(
-            522.0,
-            149.0,
-            anchor="nw",
-            text="UserID:",
-            fill="#000000",
-            font=("Encode Sans SC", 19 * -1)
-        )
-
-        entry_image_3 = PhotoImage(
-            file=relative_to_assets("entry_3.png"))
-        entry_bg_3 = self.canvas.create_image(
-            701.5,
-            163.5,
-            image=entry_image_3
-        )
-        self.userIDEntry = Entry(
-            self.canvas,
-            bd=0,
-            bg="#D9D9D9",
-            fg="#000716",
-            highlightthickness=0
-        )
-        self.userIDEntry.place(
-            x=596.0,
-            y=149.0,
-            width=211.0,
-            height=27.0
-        )
+        # self.canvas.create_text(
+        #     522.0,
+        #     149.0,
+        #     anchor="nw",
+        #     text="UserID:",
+        #     fill="#000000",
+        #     font=("Encode Sans SC", 19 * -1)
+        # )
+        #
+        # entry_image_3 = PhotoImage(
+        #     file=relative_to_assets("entry_3.png"))
+        # entry_bg_3 = self.canvas.create_image(
+        #     701.5,
+        #     163.5,
+        #     image=entry_image_3
+        # )
+        # self.userIDEntry = Entry(
+        #     self.canvas,
+        #     bd=0,
+        #     bg="#D9D9D9",
+        #     fg="#000716",
+        #     highlightthickness=0
+        # )
+        # self.userIDEntry.place(
+        #     x=596.0,
+        #     y=149.0,
+        #     width=211.0,
+        #     height=27.0
+        # )
 
 
         self.canvas.create_rectangle(
