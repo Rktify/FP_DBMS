@@ -1,5 +1,5 @@
 from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Toplevel, messagebox
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Toplevel, messagebox, END
 from .. import Redirect
 from ..View.connector import *
 
@@ -34,7 +34,8 @@ class Signup(Toplevel):
                 self.destroy()
                 Redirect.goLogin()
             else:
-                messagebox.showwarning("Invalid Username!", "This username is already taken, please try againa!")
+                messagebox.showwarning("Invalid Username!", "This username is already taken, please try again!")
+                self.userEntry.delete(0, END)
             
 
         def testEmpty(a,b,c,d,e):

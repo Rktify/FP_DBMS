@@ -56,11 +56,9 @@ def getnextpurchaseID():
 def checkCredentials(user, passw):
     cursor.execute(f"Select userName from UserInfo")
     x = [i[0] for i in cursor.fetchall()]
-    for i in range(len(x)-1):
+    for i in range(len(x)):
         if user == x[i]:
-            cursor.execute(f"Select UserID from UserInfo")
-            id = [i[0] for i in cursor.fetchall()]
-            cursor.execute(f"Select distinct password from UserInfo where UserID= {id[i]}")
+            cursor.execute(f'Select password from UserInfo where userName = "{user}"')
             x = [i[0] for i in cursor.fetchall()]
             if passw == x[0]:
                 return True
@@ -94,8 +92,7 @@ def checkuserAvailability(user):
     x = [i[0] for i in y]
     for i in range(len(x)):
         if user == x[i]:
-            return (False)
-        else:
-            return (True)
+            return False
+    return True
 
 

@@ -126,7 +126,7 @@ class Login(Toplevel):
             image=button_image_3,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: handle_button_press("Forgot", self),
+            command=lambda: handle_button_press("Forgor", self),
             relief="flat"
         )
         self.button_3.place(
