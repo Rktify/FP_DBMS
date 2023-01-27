@@ -20,12 +20,16 @@ class Selection(Toplevel):
             print("View button clicked")
             self.destroy()
             Redirect.goView()
-            return
         elif btn_name == "Manage":
             print("Manage button clicked")
             self.destroy()
-            eventWindow()
-            return
+            Redirect.goHub()
+
+        elif btn_name == "Logout":
+            print("Logged out")
+            self.destroy()
+            Redirect.goLogin()
+
 
     def __init__(self, *args, **kwargs):
         Toplevel.__init__(self, *args, **kwargs)
@@ -94,7 +98,21 @@ class Selection(Toplevel):
             width=247.0,
             height=233.0
         )
-
+        button_image_3 = PhotoImage(
+            file=relative_to_assets("button_3.png"))
+        self.button_3 = Button(self.canvas,
+            image=button_image_3,
+            borderwidth=0,
+            highlightthickness=0,
+            command=lambda: self.handle_button_press("Logout"),
+            relief="sunken", cursor="hand2", bg="#FF7A00", activebackground="#FF7A00", activeforeground="#FF7A00"
+        )
+        self.button_3.place(
+            x=720.0,
+            y=25.0,
+            width=117.0,
+            height=35.0
+        )
         self.canvas.create_rectangle(
             0.0,
             0.0,

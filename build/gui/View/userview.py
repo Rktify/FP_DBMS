@@ -87,8 +87,8 @@ class userView(Toplevel):
                 return
 
         def handleID():
-            pid = Login.Login.getUserID()
-            sql = "SELECT p.PurchaseID, u.firstName, t.TicketType, s.TicketStatus, e.EventName, e.Location, e.Date, e.Time FROM Purchase p JOIN UserInfo u ON p.UserID = u.UserID JOIN Tickets t ON p.TicketID = t.TicketID JOIN Event e ON e.EventID = p.EventID JOIN TicketStatus s ON t.TicketStatusID = s.TicketStatusID WHERE p.UserID = %s;"
+            pid = Login.Login.getuserID()
+            sql = "SELECT p.PurchaseID, u.firstName, t.TicketType, s.TicketStatus, e.EventName, e.Location, e.Date, e.Time FROM Purchase p JOIN UserInfo u ON p.UserID = u.UserID JOIN Tickets t ON p.TicketID = t.TicketID JOIN Event e ON e.EventID = p.EventID JOIN TicketStatus s ON t.TicketStatusID = s.TicketStatusID WHERE p.UserID = %s"
             value = (pid,)
             cursor.execute(sql, value)
             return cursor.fetchall()

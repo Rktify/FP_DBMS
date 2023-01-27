@@ -15,8 +15,11 @@ def loginWindow():
     Login()
 
 class Login(Toplevel):
+    def getuserID():
+        return getID(userName)
     def __init__(self, *args, **kwargs):
         def getDetails(self):
+            global userName
             print("Login button clicked")
             userName = self.nameEntry.get()
             password = self.passwordEntry.get()
@@ -31,7 +34,6 @@ class Login(Toplevel):
             else:
                 messagebox.showwarning("Invalid username or password", "Please enter the correct credentials!\n Or sign up if you haven't!")
             
-        
         def testEmpty(a,b):
             if a == "" or b == "":
                 messagebox.showinfo("Error", "Please fill in all the fields")
@@ -47,8 +49,6 @@ class Login(Toplevel):
                 user = self.nameEntry.get()
                 password, UserID = forgotPassword(user)
                 messagebox.showinfo("Forgot Password", f"Here is your login credentials: \n\nUserID: {UserID} \nusername: {user} \npassword: {password}")
-
-        
 
         Toplevel.__init__(self, *args, **kwargs)
         self.title("Evenementiel Login Menu")

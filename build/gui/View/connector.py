@@ -95,4 +95,7 @@ def checkuserAvailability(user):
             return False
     return True
 
-
+def getID(user):
+    cursor.execute(f"SELECT UserID FROM UserInfo WHERE userName = '{user}'")
+    x = [i[0] for i in cursor.fetchall()]
+    return x[0]

@@ -47,12 +47,9 @@ class Position(Toplevel):
                 print("Updated Database")
             elif btn_name == "Delete":
                 removeRecord()
-            elif btn_name == "Continue":
-                self.destroy()
-                Redirect.goCommittees()
             elif btn_name == "Back":
                 self.destroy()
-                Redirect.goEvent()
+                Redirect.goHub()
 
         def testEmpty(a,b,c,d):
             if a == "" or b == "" or c == "" or d == "":
@@ -141,17 +138,13 @@ class Position(Toplevel):
         self.button_3 = Button(self.canvas,image=button_image_3,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Delete", self),relief="sunken", cursor="hand2")
         self.button_3.place(x=456.0,y=356.0, width=119.0, height=46.0)
 
-        button_image_4 = PhotoImage(file=relative_to_assets("button_4.png"))
-        self.button_4 = Button(self.canvas,image=button_image_4,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Continue", self),relief="sunken", cursor="hand2")
-        self.button_4.place(x=722.0,y=418.0,width=119.0,height=46.0)
-
         button_image_5 = PhotoImage(file=relative_to_assets("button_6.png"))
         self.button_5 = Button(self.canvas,image=button_image_5,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Refresh", self),relief="sunken", cursor="hand2")
-        self.button_5.place(x=589.0,y=418.0,width=119.0,height=46.0)
+        self.button_5.place(x=656.0,y=418.0,width=119.0,height=46.0)
 
         button_image_6 = PhotoImage(file=relative_to_assets("button_5.png"))
         self.button_6 = Button(self.canvas,image=button_image_6,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Back", self),relief="sunken", cursor="hand2")
-        self.button_6.place(x=456.0,y=418.0, width=119.0, height=46.0)
+        self.button_6.place(x=523.0,y=418.0, width=119.0, height=46.0)
 
         self.canvas.create_rectangle(
             0.0,

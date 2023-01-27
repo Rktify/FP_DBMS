@@ -31,3 +31,6 @@ def goUserInfo():
 def goSelection():
     print("Back to Selection")
     Redirect.goSelection()
+def goHub():
+    print("Back to Hub")
+    Redirect.goHub()
