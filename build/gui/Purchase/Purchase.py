@@ -21,7 +21,7 @@ class Purchase(Toplevel):
         def handle_btn_press(btn_name, self):
             if btn_name == "Purchase":
                 PurchaseID = self.purchaseIDEntry.get()
-                userID = Login.Login.getUserID()
+                userID = Login.Login.getuserID()
                 eventID = self.eventIDEntry.get()
                 ticketID = self.ticketIDEntry.get()
                 x = checkAvailablity(ticketID)
