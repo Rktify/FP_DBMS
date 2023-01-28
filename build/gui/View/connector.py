@@ -7,16 +7,16 @@ def getEvents():
     cursor.execute("Select * from Event")
     return cursor.fetchall()
 def getCommittees():
-    cursor.execute("Select * from Committees")
+    cursor.execute("SELECT c.CommitteesID, c.Name, p.PositionName, e.EventName FROM Committees c JOIN JobPosition p ON c.PositionID = p.PositionID JOIN Event e ON c.EventID = e.EventID")
     return cursor.fetchall()
 def getPositions():
-    cursor.execute("Select * from JobPosition")
+    cursor.execute("Select p.PositionID, p.PositionName, p.Salary, e.EventName FROM JobPosition p JOIN Event e ON p.EventID = e.EventID")
     return cursor.fetchall()
 def getParticipants():
     cursor.execute("Select * from Participants")
     return cursor.fetchall()
 def getTickets():
-    cursor.execute("Select * from Tickets")
+    cursor.execute("Select t.TicketID, e.EventName, t.TicketType, s.TicketStatus FROM Tickets t JOIN Event e ON t.EventID = e.EventID JOIN TicketStatus s ON t.TicketStatusID = s.TicketStatusID")
     return cursor.fetchall()
 def getTicketStats():
     cursor.execute("Select * from TicketStatus")
@@ -24,9 +24,9 @@ def getTicketStats():
 def getUserInfo():
     cursor.execute("Select UserID, firstName, lastName, Username from UserInfo")
     return cursor.fetchall()
-    
+
 def getTicketss():
-    cursor.execute("SELECT t.TicketID, e.EventName, t.TicketType, s.TicketStatus from Tickets t join Event e ON t.EventID = e.EventID join TicketStatus s ON t.TicketStatusID = s.TicketStatusID;")
+    cursor.execute("SELECT t.TicketID, e.EventName, t.TicketType, s.TicketStatus FROM Tickets t JOIN Event e ON t.EventID = e.EventID JOIN TicketStatus s ON t.TicketStatusID = s.TicketStatusID;")
     return cursor.fetchall()
 
 def getPurchased():

@@ -65,8 +65,8 @@ class View(Toplevel):
                 self.columns = {
                     "Committees ID": ["Committees ID", 100],
                     "Name": ["Name", 200],
-                    "Position ID": ["Position ID", 100],
-                    "Event ID": ["Event ID", 96]
+                    "Position": ["Position", 100],
+                    "Event": ["Event", 96]
                 }
 
                 self.treeview = Treeview(
@@ -86,12 +86,7 @@ class View(Toplevel):
 
             elif btn_name == "Purchase":
                 print("Purchase pressed")
-                self.columns = {
-                    "Purchase ID": ["Purchase ID", 100],
-                    "UserID": ["UserID", 200],
-                    "Ticket ID": ["Ticket ID", 100],
-                    "Event ID": ["Event ID", 96]
-                }
+                self.columns = {"Ticket ID": ["Ticket ID", 50],"Ticket Type": ["Ticket Type", 70],"Event ID": ["Event ID", 50],"Event Name": ["Event Name", 100],"Location": ["Location", 100],"Date": ["Date", 70],"Time": ["Time", 46]}
 
                 self.treeview = Treeview(
                     self,
@@ -114,7 +109,7 @@ class View(Toplevel):
                     "Position ID": ["Position ID", 100],
                     "Name": ["Name", 200],
                     "Salary": ["Salary", 100],
-                    "Event ID": ["Event ID", 96]
+                    "Event": ["Event", 96]
                 }
 
                 self.treeview = Treeview(
@@ -136,9 +131,9 @@ class View(Toplevel):
                 print("Tickets pressed")
                 self.columns = {
                     "Ticket ID": ["Ticket ID", 150],
-                    "Event ID": ["Event ID", 100],
+                    "Event": ["Event", 100],
                     "Ticket Type": ["Ticket Type", 100],
-                    "Status ID": ["Status ID", 96]
+                    "Status": ["Status", 96]
                 }
 
                 self.treeview = Treeview(
@@ -156,7 +151,7 @@ class View(Toplevel):
                 self.treeview.place(x=295.0, y=80.0, width=500.0, height=300.0)
                 handle_refresh(self, btn_name)
 
-            elif btn_name == "TicketStats":
+            elif btn_name == "TicketStatus":
                 print("Tickets Status pressed")
                 self.columns = {
                     "Ticket Status ID": ["Ticket Status ID", 250],
@@ -208,7 +203,6 @@ class View(Toplevel):
                 Redirect.goSelection()
                 return
 
-        #View tkinter
         Toplevel.__init__(self, *args, **kwargs)
         self.title("Evenementiel Viewing Menu")
         self.geometry("853x556")
@@ -242,11 +236,12 @@ class View(Toplevel):
             highlightthickness=0,
             command=lambda: handle_button_press("UserInfo", self),
             relief="sunken",
-            bg = '#FF7A00',           
+            bg = '#FF7A00',
             cursor = 'hand2',
             activebackground='#FF7A00',
             activeforeground='#FF7A00'
         )
+
         self.button_1.place(
             x=22.0,
             y=143.0,
@@ -261,7 +256,7 @@ class View(Toplevel):
             image=button_image_2,
             borderwidth=0,
             highlightthickness=0,
-            command=lambda: handle_button_press("TicketStats", self),
+            command=lambda: handle_button_press("TicketStatus", self),
             relief="sunken",
             bg = '#FF7A00',
             cursor = 'hand2',
