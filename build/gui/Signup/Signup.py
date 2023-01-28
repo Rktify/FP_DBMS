@@ -36,7 +36,6 @@ class Signup(Toplevel):
             else:
                 messagebox.showwarning("Invalid Username!", "This username is already taken, please try again!")
                 self.userEntry.delete(0, END)
-            
 
         def testEmpty(a,b,c,d,e):
             if a == "" or b == "" or c == "" or d == "" or e == "":

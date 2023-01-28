@@ -25,3 +25,18 @@ def getTicketStatus():
 def getUserInfo():
     cursor.execute("Select UserID, firstName, lastName, Username from UserInfo")
     return cursor.fetchall()
+
+def getPositionlist(eid):
+    sql = "Select PositionName from JobPosition WHERE EventID = %s"
+    value = (eid,)
+    cursor.execute(sql, value)
+    x = [i[0] for i in cursor.fetchall()]
+    return x
+
+def getPositionID(name, eid):
+    sql = "SELECT PositionID FROM JobPosition WHERE PositionName = %s and EventID = %s"
+    value = (name, eid)
+    cursor.execute(sql, value)
+    y = cursor.fetchall()
+    pid = [i[0] for i in y]
+    return(pid)

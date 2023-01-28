@@ -1,7 +1,7 @@
 from pathlib import Path
 from tkinter import *
 from tkinter import messagebox
-from tkinter.ttk import Treeview
+from tkinter.ttk import Treeview, Combobox
 from ..connector import *
 from .. import Redirect
 
@@ -63,6 +63,8 @@ class Committees(Toplevel):
             clearRecord()
 
         def clearRecord():
+            self.eventIDEntry.configure(state='normal')
+            self.positionIDEntry.configure(state='normal')
             self.committeesIDEntry.configure(state='normal')
             self.eventIDEntry.delete(0, END)
             self.nameEntry.delete(0, END)
@@ -84,6 +86,16 @@ class Committees(Toplevel):
 
             print("Selected")
 
+        def selectdropRecord(e):
+            eventID = self.eventIDEntry.get()
+            clearRecord()
+            posname = positiondropDown.get()
+            posID = getPositionID(posname, eventID)
+            self.positionIDEntry.insert(0, posID)
+            self.eventIDEntry.insert(0, eventID)
+            self.eventIDEntry.configure(state='readonly')
+            self.positionIDEntry.configure(state='readonly')
+
         def removeRecord():
             selected = treeview.focus()
             eid = treeview.item(selected, 'values')[0]
@@ -93,6 +105,12 @@ class Committees(Toplevel):
             connect.commit()
             treeview.delete(selected)
             refresh()
+
+        def getdropdownList(self):
+            eventID = self.eventIDEntry.get()
+            options = getPositionlist(eventID)
+            positiondropDown["values"] = options
+            positiondropDown.current(0)
 
         Toplevel.__init__(self, *args, **kwargs)
         self.title("Evenementiel Managing Committees")
@@ -112,12 +130,15 @@ class Committees(Toplevel):
             selectmode="browse",
         )
 
+        positiondropDown = Combobox(self.canvas, postcommand = lambda: getdropdownList(self), state="readonly")
+
         def display():
             for idx, txt in columns.items():
                 treeview.heading(idx, text=txt[0])
                 treeview.column(idx, width=txt[1])
 
             treeview.place(x=20.0, y=62.0, width=400.0, height=358.0)
+            positiondropDown.place(x=607.0, y=117.0, width=211.0, height=27.0)
             treeview.delete(*treeview.get_children())
             event_data = getCommittees()
             for row in event_data:
@@ -207,7 +228,7 @@ class Committees(Toplevel):
         entry_bg_3 = self.canvas.create_image(711.5,213.5,image=entry_image_3)
         self.positionIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
         self.positionIDEntry.place( x=606.0, y=244.0, width=211.0, height=27.0)
-        
+
 
         self.canvas.create_text(
             465.0,
@@ -222,7 +243,7 @@ class Committees(Toplevel):
         entry_bg_4 = self.canvas.create_image(712.5,167.5,image=entry_image_4)
         self.eventIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
         self.eventIDEntry.place(x=606.0,y=290.0,width=211.0,height=27.0)
-        
+
 
         self.canvas.create_text(
             465.0,
@@ -233,7 +254,17 @@ class Committees(Toplevel):
             font=("Encode Sans SC", 19 * -1)
         )
 
+        self.canvas.create_text(
+            465.0,
+            110.0,
+            anchor="nw",
+            text="Position Name",
+            fill="#000000",
+            font=("Encode Sans SC", 19 * -1)
+        )
+
         treeview.bind("<Double-1>", selectRecord)
+        positiondropDown.bind("<<ComboboxSelected>>", selectdropRecord)
 
         self.resizable(False, False)
         self.mainloop()
