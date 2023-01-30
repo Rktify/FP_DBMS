@@ -38,7 +38,7 @@ def goEvent():
 def goCommittees():
     print("Committees Table")
     gui.Manage.Redirect.goCommittees()
-def goPurchase():
+def goPurchased():
     print("Purchase Table")
     gui.Manage.Redirect.goPurchase()
 def goPosition():

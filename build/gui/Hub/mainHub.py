@@ -38,7 +38,7 @@ class Hub(Toplevel):
                 Redirect.goUserInfo()
             elif name == "Purchase":
                 self.destroy()
-                Redirect.goPurchase()
+                Redirect.goPurchased()
             elif name == "Back":
                 self.destroy()
                 Redirect.goSelection()
