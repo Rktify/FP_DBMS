@@ -22,21 +22,31 @@ def getTickets():
 def getTicketStatus():
     cursor.execute("Select * from TicketStatus")
     return cursor.fetchall()
+def getSalary():
+    cursor.execute("Select * from Salary")
+    return cursor.fetchall()
 def getUserInfo():
     cursor.execute("Select UserID, firstName, lastName, Username from UserInfo")
     return cursor.fetchall()
 
-def getPositionlist(eid):
-    sql = "Select PositionName from JobPosition WHERE EventID = %s"
-    value = (eid,)
-    cursor.execute(sql, value)
+def getPositionlist():
+    sql = "Select PositionName from JobPosition"
+    cursor.execute(sql)
     x = [i[0] for i in cursor.fetchall()]
     return x
 
-def getPositionID(name, eid):
-    sql = "SELECT PositionID FROM JobPosition WHERE PositionName = %s and EventID = %s"
-    value = (name, eid)
+def getPositionName(id):
+    sql = "SELECT PositionName FROM JobPosition WHERE PositionID = %s"
+    value = (id,)
+    cursor.execute(sql, value)
+    y = cursor.fetchall()
+    name = [i[0] for i in y]
+    return name[0]
+
+def getPositionID(name):
+    sql = "SELECT PositionID FROM JobPosition WHERE PositionName = %s"
+    value = (name,)
     cursor.execute(sql, value)
     y = cursor.fetchall()
     pid = [i[0] for i in y]
-    return(pid)
+    return pid[0]

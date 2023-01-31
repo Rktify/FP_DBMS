@@ -5,6 +5,7 @@ import gui.Manage.Position.main
 import gui.Manage.Tickets.main
 import gui.Manage.TicketStatus.main
 import gui.Manage.UserInfo.main
+import gui.Manage.Salary.main
 from .. import Redirect
 
 def goEvent():
@@ -28,6 +29,9 @@ def goTicketStatus():
 def goUserInfo():
     print("User Info Table")
     gui.Manage.UserInfo.main.userWindow()
+def goSalary():
+    print("Salary Table")
+    gui.Manage.Salary.main.salaryWindow()
 def goSelection():
     print("Back to Selection")
     Redirect.goSelection()

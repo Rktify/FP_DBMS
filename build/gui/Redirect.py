@@ -53,3 +53,6 @@ def goTicketStatus():
 def goUserInfo():
     print("User Info Table")
     gui.Manage.Redirect.goUserInfo()
+def goSalary():
+    print("Salary table")
+    gui.Manage.Redirect.goSalary()

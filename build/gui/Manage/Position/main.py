@@ -24,11 +24,9 @@ class Position(Toplevel):
             elif btn_name == "Add":
                 positionID = self.positionIDEntry.get()
                 position = self.positionEntry.get()
-                salary = self.salaryEntry.get()
-                eventID = self.eventIDEntry.get()
-                testEmpty(positionID, position, salary, eventID)
-                sql = "INSERT INTO JobPosition VALUES(%s, %s, %s, %s);"
-                value = (positionID, position, salary, eventID)
+                testEmpty(positionID, position)
+                sql = "INSERT INTO JobPosition VALUES(%s, %s);"
+                value = (positionID, position)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
@@ -36,11 +34,9 @@ class Position(Toplevel):
             elif btn_name == "Edit":
                 positionID = self.positionIDEntry.get()
                 position = self.positionEntry.get()
-                salary = self.salaryEntry.get()
-                eventID = self.eventIDEntry.get()
-                testEmpty(positionID, position, salary, eventID)
-                sql = "UPDATE JobPosition SET PositionID = %s, PositionName = %s, Salary = %s, EventID = %s WHERE PositionID = %s"
-                value = (positionID, position, salary, eventID, positionID)
+                testEmpty(positionID, position)
+                sql = "UPDATE JobPosition SET PositionID = %s, PositionName = %s WHERE PositionID = %s"
+                value = (positionID, position, positionID)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
@@ -52,7 +48,7 @@ class Position(Toplevel):
                 Redirect.goHub()
 
         def testEmpty(a,b,c,d):
-            if a == "" or b == "" or c == "" or d == "":
+            if a == "" or b == "":
                 messagebox.showinfo("Error", "Please fill in all the fields")
                 return
             else:
@@ -66,8 +62,6 @@ class Position(Toplevel):
             self.positionIDEntry.configure(state='normal')
             self.positionIDEntry.delete(0, END)
             self.positionEntry.delete(0, END)
-            self.salaryEntry.delete(0, END)
-            self.eventIDEntry.delete(0, END)
 
         def selectRecord(e):
             self.positionIDEntry.configure(state='normal')
@@ -78,8 +72,6 @@ class Position(Toplevel):
 
             self.positionIDEntry.insert(0, values[0])
             self.positionEntry.insert(0, values[1])
-            self.salaryEntry.insert(0, values[2])
-            self.eventIDEntry.insert(0, values[3])
             self.positionIDEntry.configure(state='readonly')
 
             print("Selected")
@@ -102,7 +94,7 @@ class Position(Toplevel):
         self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x = 0, y = 0)
 
-        columns = {"Position ID": ["Position ID", 100],"Position Name": ["Position Name", 100],"Salary": ["Salary", 100],"Event ID": ["Event ID", 96]}
+        columns = {"Position ID": ["Position ID", 200],"Position Name": ["Position Name", 196]}
 
         treeview = Treeview(self.canvas, columns=list(columns.keys()), show="headings", height=200, selectmode="browse")
 
@@ -152,7 +144,8 @@ class Position(Toplevel):
             441.0,
             556.0,
             fill="#FF9D43",
-            outline="")
+            outline=""
+        )
 
         self.canvas.create_rectangle(
             20.0,
@@ -160,7 +153,8 @@ class Position(Toplevel):
             420.0,
             420.0,
             fill="#FFFFFF",
-            outline="")
+            outline=""
+        )
 
         self.canvas.create_text(
             513.0,
@@ -171,37 +165,15 @@ class Position(Toplevel):
             font=("Encode Sans SC", 37 * -1)
         )
 
-        entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
-        entry_bg_1 = self.canvas.create_image(711.5,304.5,image=entry_image_1)
+        # entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
+        # entry_bg_1 = self.canvas.create_image(711.5,304.5,image=entry_image_1)
         self.positionIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
         self.positionIDEntry.place(x=607.0,y=153.0,width=211.0,height=27.0)
 
-        self.canvas.create_text(
-            460.0,
-            293.0,
-            anchor="nw",
-            text="EventID: ",
-            fill="#000000",
-            font=("Encode Sans SC", 19 * -1)
-        )
-
-        entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
-        entry_bg_2 = self.canvas.create_image(711.5,258.5,image=entry_image_2)
+        # entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
+        # entry_bg_2 = self.canvas.create_image(711.5,258.5,image=entry_image_2)
         self.positionEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
         self.positionEntry.place(x=606.0,y=199.0,width=211.0,height=27.0)
-
-        self.canvas.create_text(
-            460.0, 247.0,
-            anchor="nw",
-            text="Salary: ",
-            fill="#000000",
-            font=("Encode Sans SC", 19 * -1)
-        )
-
-        entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
-        entry_bg_3 = self.canvas.create_image(711.5,213.5,image=entry_image_3)
-        self.salaryEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.salaryEntry.place( x=606.0, y=244.0, width=211.0, height=27.0)
 
         self.canvas.create_text(
             460.0,
@@ -211,11 +183,6 @@ class Position(Toplevel):
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )
-
-        entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
-        entry_bg_4 = self.canvas.create_image(712.5,167.5,image=entry_image_4)
-        self.eventIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.eventIDEntry.place(x=606.0,y=290.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
             460.0,

@@ -1,50 +1,43 @@
 from pathlib import Path
 from tkinter import *
 from tkinter import messagebox
-from tkinter.ttk import Treeview, Combobox
+from tkinter.ttk import Treeview
 from ..connector import *
 from .. import Redirect
 
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame4")
+ASSETS_PATH = OUTPUT_PATH / Path(r"assets\frame0")
 
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
-def committeesWindow():
-    Committees()
+def salaryWindow():
+    Salary()
 
-class Committees(Toplevel):
+class Salary(Toplevel):
     def __init__(self, *args, **kwargs):
         def handle_button_press(btn_name, self):
             if btn_name == "Refresh":
                 print("Refreshed")
                 refresh()
             elif btn_name == "Add":
-                committeesID = self.committeesIDEntry.get()
-                name = self.nameEntry.get()
-                eventID = self.eventIDEntry.get()
-                posname = positiondropDown.get()
-                positionID = getPositionID(posname)
                 salaryID = self.salaryIDEntry.get()
-                testEmpty(committeesID, name, positionID, eventID, salaryID)
-                sql = "INSERT INTO Committees VALUES(%s, %s, %s, %s, %s);"
-                value = (committeesID, name, positionID, eventID, salaryID)
+                name = self.salaryEntry.get()
+                testEmpty(salaryID, name)
+                sql = "INSERT INTO Salary VALUES(%s, %s);"
+                value = (salaryID, name)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
+                print("Added into Database")
             elif btn_name == "Edit":
-                committeesID = self.committeesIDEntry.get()
-                name = self.nameEntry.get()
-                eventID = self.eventIDEntry.get()
-                posname = positiondropDown.get()
-                positionID = getPositionID(posname)
                 salaryID = self.salaryIDEntry.get()
-                testEmpty(committeesID, name, positionID, eventID, salaryID)
-                sql = "UPDATE Committees SET CommitteesID = %s, Name = %s, PositionID = %s, EventID = %s, SalaryID = %s WHERE PositionID = %s"
-                value = (committeesID, name, positionID, eventID, salaryID, committeesID)
+                name = self.salaryEntry.get()
+                testEmpty(salaryID, name)
+                sql = "UPDATE Salary SET SalaryID = %s, Salary = %s WHERE SalaryID = %s"
+                value = (salaryID, name, salaryID)
                 cursor.execute(sql, value)
                 connect.commit()
                 refresh()
@@ -55,8 +48,8 @@ class Committees(Toplevel):
                 self.destroy()
                 Redirect.goHub()
 
-        def testEmpty(a,b,c,d,e):
-            if a == "" or b == "" or c == "" or d == "" or e == "":
+        def testEmpty(a,b):
+            if a == "" or b == "":
                 messagebox.showinfo("Error", "Please fill in all the fields")
                 return
             else:
@@ -67,62 +60,39 @@ class Committees(Toplevel):
             clearRecord()
 
         def clearRecord():
-            self.eventIDEntry.configure(state='normal')
-            self.committeesIDEntry.configure(state='normal')
-            self.eventIDEntry.delete(0, END)
-            self.nameEntry.delete(0, END)
-            self.committeesIDEntry.delete(0, END)
+            self.salaryIDEntry.configure(state='normal')
             self.salaryIDEntry.delete(0, END)
+            self.salaryEntry.delete(0, END)
 
         def selectRecord(e):
-            getdropdownList(self)
-            self.committeesIDEntry.configure(state='normal')
             clearRecord()
 
             selected = treeview.focus()
             values = treeview.item(selected, 'values')
-            positionID = values[2]
-            positionName = getPositionName(positionID)
-            options = getPositionlist()
-            for i in range(len(options)):
-                if positionName == options[i]:
-                    positiondropDown.current(i)
-            self.committeesIDEntry.insert(0, values[0])
-            self.nameEntry.insert(0, values[1])
-            self.eventIDEntry.insert(0, values[3])
-            self.salaryIDEntry.insert(0, values[4])
-            self.committeesIDEntry.configure(state='readonly')
+
+            self.salaryEntry.insert(0, values[1])
+            self.salaryIDEntry.insert(0, values[0])
+            self.salaryIDEntry.configure(state='readonly')
 
             print("Selected")
-
-        def selectdropRecord(e):
-            posname = positiondropDown.get()
-            posID = getPositionID(posname)
 
         def removeRecord():
             selected = treeview.focus()
             eid = treeview.item(selected, 'values')[0]
-            sql = "DELETE FROM Committees WHERE CommitteesID=%s"
+            sql = "DELETE FROM Salary WHERE SalaryID=%s"
             value = (eid,)
             cursor.execute(sql, value)
             connect.commit()
             treeview.delete(selected)
             refresh()
-
-        def getdropdownList(self):
-            options = getPositionlist()
-            positiondropDown["values"] = options
-            positiondropDown.current(0)
+            print("Removed from Database")
 
         Toplevel.__init__(self, *args, **kwargs)
-        self.title("Evenementiel Managing Committees")
+        self.title("Evenementiel Managing Salary")
         self.geometry("853x556")
-        self.current_window = None
-
         self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x = 0, y = 0)
-
-        columns = {"Committees ID": ["Committees ID", 100], "Name": ["Name", 100], "Position ID": ["Position ID", 100], "Event ID": ["Event ID", 50], "Salary ID": ["Salary ID", 46]}
+        columns = {"Salary ID": ["Salary ID", 200],"Salary": ["Salary", 196]}
 
         treeview = Treeview(
             self.canvas,
@@ -132,21 +102,19 @@ class Committees(Toplevel):
             selectmode="browse",
         )
 
-        positiondropDown = Combobox(self.canvas, postcommand = lambda: getdropdownList(self), state="readonly")
-
         def display():
             for idx, txt in columns.items():
                 treeview.heading(idx, text=txt[0])
                 treeview.column(idx, width=txt[1])
 
             treeview.place(x=20.0, y=62.0, width=400.0, height=358.0)
-            positiondropDown.place(x=607.0, y=199.0, width=211.0, height=27.0)
             treeview.delete(*treeview.get_children())
-            event_data = getCommittees()
+            event_data = getSalary()
             for row in event_data:
                 treeview.insert("", "end", values=row)
 
         display()
+        treeview.bind("<Double-1>", selectRecord)
 
         self.canvas.create_rectangle(0.0, 0.0, 853.0, 556.0, fill="#FFFFFF", outline="")
 
@@ -166,19 +134,19 @@ class Committees(Toplevel):
         self.button_3 = Button(self.canvas,image=button_image_3,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Delete", self),relief="sunken", cursor="hand2")
         self.button_3.place(x=456.0,y=356.0, width=119.0, height=46.0)
 
-        button_image_5 = PhotoImage(file=relative_to_assets("button_5.png"))
+        button_image_5 = PhotoImage(file=relative_to_assets("button_6.png"))
         self.button_5 = Button(self.canvas,image=button_image_5,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Refresh", self),relief="sunken", cursor="hand2")
         self.button_5.place(x=656.0,y=418.0,width=119.0,height=46.0)
 
-        button_image_6 = PhotoImage(file=relative_to_assets("button_6.png"))
+        button_image_6 = PhotoImage(file=relative_to_assets("button_5.png"))
         self.button_6 = Button(self.canvas,image=button_image_6,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Back", self),relief="sunken", cursor="hand2")
         self.button_6.place(x=523.0,y=418.0, width=119.0, height=46.0)
 
         self.canvas.create_text(
-            484.0,
+            511.0,
             17.0,
             anchor="nw",
-            text="Committees Table",
+            text="Salary Table",
             fill="#000000",
             font=("Encode Sans SC", 37 * -1)
         )
@@ -199,71 +167,33 @@ class Committees(Toplevel):
             fill="#FFFFFF",
             outline="")
 
-        self.canvas.create_text(
-            465.0,
-            117.0, #155
-            anchor="nw",
-            text="CommitteesID: ",
-            fill="#000000",
-            font=("Encode Sans SC", 19 * -1)
-        )
         entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
-        entry_bg_1 = self.canvas.create_image(711.5,304.5,image=entry_image_1)
-        self.committeesIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.committeesIDEntry.place(x=607.0,y=117.0,width=211.0,height=27.0)
-
-
+        entry_bg_1 = self.canvas.create_image(718.5,218.5,image=entry_image_1)
+        self.salaryIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.salaryIDEntry.place( x=613.0,y=158.0, width=211.0, height=27.0)
+        
         self.canvas.create_text(
-            465.0,
-            155.0,
+            460.0,
+            204.0,
             anchor="nw",
-            text="Name: ",
+            text="Salary:",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )
 
         entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
-        entry_bg_2 = self.canvas.create_image(711.5,258.5,image=entry_image_2)
-        self.nameEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.nameEntry.place(x=606.0,y=155.0,width=211.0,height=27.0)
+        entry_bg_2 = self.canvas.create_image(718.5,172.5,image=entry_image_2)
+        self.salaryEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
+        self.salaryEntry.place(x=613.0,y=204.0,width=211.0,height=27.0)
 
         self.canvas.create_text(
-            465.0,
-            247.0,
+            460.0,
+            160.0,
             anchor="nw",
-            text="EventID: ",
+            text="SalaryID:",
             fill="#000000",
             font=("Encode Sans SC", 19 * -1)
         )
-        entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
-        entry_bg_4 = self.canvas.create_image(712.5,167.5,image=entry_image_4)
-        self.eventIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.eventIDEntry.place(x=606.0,y=247.0,width=211.0,height=27.0)
-
-        self.canvas.create_text(
-            465.0, 290.0,
-            anchor="nw",
-            text="SalaryID: ",
-            fill="#000000",
-            font=("Encode Sans SC", 19 * -1)
-        )
-
-        entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
-        entry_bg_3 = self.canvas.create_image(711.5,213.5,image=entry_image_3)
-        self.salaryIDEntry = Entry(self.canvas,bd=0,bg="#D9D9D9",fg="#000716",highlightthickness=0)
-        self.salaryIDEntry.place( x=606.0, y=290.0, width=211.0, height=27.0)
-        
-        self.canvas.create_text(
-            465.0,
-            199.0,
-            anchor="nw",
-            text="Position Name",
-            fill="#000000",
-            font=("Encode Sans SC", 19 * -1)
-        )
-
-        treeview.bind("<Double-1>", selectRecord)
-        positiondropDown.bind("<<ComboboxSelected>>", selectdropRecord)
 
         self.resizable(False, False)
         self.mainloop()

@@ -39,6 +39,9 @@ class Hub(Toplevel):
             elif name == "Purchase":
                 self.destroy()
                 Redirect.goPurchased()
+            elif name == "Salary":
+                self.destroy()
+                Redirect.goSalary()
             elif name == "Back":
                 self.destroy()
                 Redirect.goSelection()
@@ -57,7 +60,7 @@ class Hub(Toplevel):
         button_image_1 = PhotoImage(
             file=relative_to_assets("button_1.png"))
         self.button_1 = Button(self.canvas,image=button_image_1,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("UserInfo", self),relief="sunken",activebackground="#FFFFFF",activeforeground="#FFFFFF",bg="#FFFFFF")
-        self.button_1.place(x=324.0,y=400.0,width=203.0,height=69.0)
+        self.button_1.place(x=187.0,y=400.0,width=203.0,height=69.0)
 
         button_image_2 = PhotoImage(
             file=relative_to_assets("button_2.png"))
@@ -93,6 +96,11 @@ class Hub(Toplevel):
             file=relative_to_assets("button_8.png"))
         self.button_8 = Button(self.canvas,image=button_image_8,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Back", self),relief="sunken",activebackground="#FFFFFF",activeforeground="#FFFFFF",bg="#FFFFFF")
         self.button_8.place(x=223.0,y=42.0,width=405.0,height=75.0)
+
+        button_image_9 = PhotoImage(
+            file=relative_to_assets("button_9.png"))
+        self.button_9 = Button(self.canvas,image=button_image_9,borderwidth=0,highlightthickness=0,command=lambda: handle_button_press("Salary", self),relief="sunken",activebackground="#FFFFFF",activeforeground="#FFFFFF",bg="#FFFFFF")
+        self.button_9.place(x=461.0,y=400.0,width=230.0,height=69.0)
         
         self.resizable(False, False)
         self.mainloop()

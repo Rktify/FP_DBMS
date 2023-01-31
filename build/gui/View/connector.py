@@ -10,7 +10,7 @@ def getCommittees():
     cursor.execute("SELECT c.CommitteesID, c.Name, p.PositionName, e.EventName FROM Committees c JOIN JobPosition p ON c.PositionID = p.PositionID JOIN Event e ON c.EventID = e.EventID")
     return cursor.fetchall()
 def getPositions():
-    cursor.execute("Select p.PositionID, p.PositionName, p.Salary, e.EventName FROM JobPosition p JOIN Event e ON p.EventID = e.EventID")
+    cursor.execute("Select c.PositionID, p.PositionName, s.Salary, e.EventName FROM Committees c JOIN JobPosition p ON c.PositionID = p.PositionID JOIN Salary s ON c.SalaryID = s.SalaryID JOIN Event e on c.EventID = e.EventID")
     return cursor.fetchall()
 def getParticipants():
     cursor.execute("Select * from Participants")
