@@ -122,7 +122,7 @@ class Committees(Toplevel):
         self.canvas = Canvas(self, bg = "#FFFFFF", height = 556, width = 853,bd = 0, highlightthickness = 0, relief = "ridge")
         self.canvas.place(x = 0, y = 0)
 
-        columns = {"Committees ID": ["Committees ID", 100], "Name": ["Name", 100], "Position ID": ["Position ID", 100], "Event ID": ["Event ID", 50], "Salary ID": ["Salary ID", 46]}
+        columns = {"Committees ID": ["Committees ID", 95], "Name": ["Name", 100], "Position ID": ["Position ID", 60], "Event ID": ["Event ID", 45], "Salary ID": ["Salary ID", 60]}
 
         treeview = Treeview(
             self.canvas,
