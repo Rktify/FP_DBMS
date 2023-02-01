@@ -27,11 +27,14 @@ CREATE TABLE `Committees` (
   `Name` varchar(255) DEFAULT NULL,
   `PositionID` int DEFAULT NULL,
   `EventID` int DEFAULT NULL,
+  `SalaryID` int DEFAULT NULL,
   PRIMARY KEY (`CommitteesID`),
   KEY `PositionID` (`PositionID`),
   KEY `EventID` (`EventID`),
+  KEY `SalaryID` (`SalaryID`),
   CONSTRAINT `Committees_ibfk_1` FOREIGN KEY (`PositionID`) REFERENCES `JobPosition` (`PositionID`),
-  CONSTRAINT `Committees_ibfk_2` FOREIGN KEY (`EventID`) REFERENCES `Event` (`EventID`)
+  CONSTRAINT `Committees_ibfk_2` FOREIGN KEY (`EventID`) REFERENCES `Event` (`EventID`),
+  CONSTRAINT `Committees_ibfk_3` FOREIGN KEY (`SalaryID`) REFERENCES `Salary` (`SalaryID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -41,7 +44,7 @@ CREATE TABLE `Committees` (
 
 LOCK TABLES `Committees` WRITE;
 /*!40000 ALTER TABLE `Committees` DISABLE KEYS */;
-INSERT INTO `Committees` VALUES (1,'Phil',1,1),(5246,'James Paolo',2,3),(12345,'Julie Malina',3,1),(12548,'Pablo Selçao',3,1),(23546,'John',1,1),(36541,'Alma Rodriguez',2,1);
+INSERT INTO `Committees` VALUES (1,'Phil',1,1,1),(2,'Arish Tandra',11,2,4),(5246,'James Paolo',2,3,2),(12345,'Julie Malina',3,1,2),(12548,'Pablo Selçao',3,1,2),(23546,'John',1,1,1),(36541,'Alma Rodriguez',2,1,2);
 /*!40000 ALTER TABLE `Committees` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,11 +85,7 @@ DROP TABLE IF EXISTS `JobPosition`;
 CREATE TABLE `JobPosition` (
   `PositionID` int NOT NULL,
   `PositionName` varchar(255) DEFAULT NULL,
-  `Salary` int DEFAULT NULL,
-  `EventID` int DEFAULT NULL,
-  PRIMARY KEY (`PositionID`),
-  KEY `EventID` (`EventID`),
-  CONSTRAINT `JobPosition_ibfk_1` FOREIGN KEY (`EventID`) REFERENCES `Event` (`EventID`)
+  PRIMARY KEY (`PositionID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -96,7 +95,7 @@ CREATE TABLE `JobPosition` (
 
 LOCK TABLES `JobPosition` WRITE;
 /*!40000 ALTER TABLE `JobPosition` DISABLE KEYS */;
-INSERT INTO `JobPosition` VALUES (1,'Event coordinator',43711,1),(2,'Marketing coordinator',44878,1),(3,'Event operations manager',50976,1),(4,'Host',33875,1),(5,'Bartender',36259,1),(6,'Marketing Manger',45068,2),(7,'Bartender',42045,2),(8,'Staff Manger',51000,2),(9,'Cook',46700,2),(10,'DJ',45600,2),(11,'Stage manager',53216,2),(12,'Marketing Manager',38000,3),(13,'Staff Manager',39000,3),(14,'Host',40875,3),(15,'Security guards',26875,3),(16,'Host',49852,4);
+INSERT INTO `JobPosition` VALUES (1,'Event coordinator'),(2,'Marketing coordinator'),(3,'Event operations manager'),(4,'Host'),(5,'Bartender'),(6,'Cook'),(7,'DJ'),(8,'Stage manager'),(9,'Marketing Manager'),(10,'Staff Manager'),(11,'Security guards');
 /*!40000 ALTER TABLE `JobPosition` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,6 +129,30 @@ LOCK TABLES `Purchase` WRITE;
 /*!40000 ALTER TABLE `Purchase` DISABLE KEYS */;
 INSERT INTO `Purchase` VALUES (1,1,1,1),(2,1,5,3),(3,5,2,1),(4,6,3,2);
 /*!40000 ALTER TABLE `Purchase` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Salary`
+--
+
+DROP TABLE IF EXISTS `Salary`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Salary` (
+  `SalaryID` int NOT NULL,
+  `Salary` int DEFAULT NULL,
+  PRIMARY KEY (`SalaryID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Salary`
+--
+
+LOCK TABLES `Salary` WRITE;
+/*!40000 ALTER TABLE `Salary` DISABLE KEYS */;
+INSERT INTO `Salary` VALUES (1,10000),(2,6000),(3,500),(4,510);
+/*!40000 ALTER TABLE `Salary` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -222,4 +245,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-29 21:50:11
+-- Dump completed on 2023-01-31 16:27:23
